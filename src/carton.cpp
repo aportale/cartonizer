@@ -101,15 +101,15 @@ QVector<Carton::Vertices> Carton::verticesOfFace(Faces face)
 		{BackReflection,  {RightBottomBack, LeftBottomBack, LeftSubBack, RightSubBack}}
 	};
 	static const size_t facesCount = sizeof(verticesOfFaces)/sizeof(verticesOfFaces[0]);
-	static const size_t verticesCount = sizeof(verticesOfFaces[0].vertices)/sizeof(verticesOfFaces[0].vertices[0]);
+	static const size_t verticesPerFaceCount = sizeof(verticesOfFaces[0].vertices)/sizeof(verticesOfFaces[0].vertices[0]);
 
 	static QHash<Faces, QVector<Vertices> > verticesOfFaceHash;
 	if (verticesOfFaceHash.empty()) {
-		for (int i = 0; i < facesCount; i++) {
-			QVector<Vertices> vertices(verticesCount);
-			for (int j = 0; j < verticesCount; j++)
-				vertices[j] = verticesOfFaces[i].vertices[j];
-			verticesOfFaceHash[verticesOfFaces[i].face] = vertices;
+		for (int faceIndex = 0; faceIndex < facesCount; faceIndex++) {
+			QVector<Vertices> vertices(verticesPerFaceCount);
+			for (int verticeIndex = 0; verticeIndex < verticesPerFaceCount; verticeIndex++)
+				vertices[verticeIndex] = verticesOfFaces[faceIndex].vertices[verticeIndex];
+			verticesOfFaceHash[verticesOfFaces[faceIndex].face] = vertices;
 		}
 	}
 

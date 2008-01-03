@@ -57,8 +57,11 @@ public:
 	static const int m_defaultWidth = 300;
 	static const int m_defaultHeight = 400;
 	static const int m_defaultDepth = 100;
+	static const QHash<Carton::Faces, QVector<Carton::Vertices> > m_facesVerticesHash;
 
 private:
+	static QHash<Carton::Faces, QVector<Carton::Vertices> > facesVerticesHash();
+
 	qreal m_xOffset;
 	qreal m_yOffset;
 	qreal m_xRotation;

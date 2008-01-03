@@ -1,6 +1,8 @@
 #include "carton.h"
 #include <QPainter>
 
+const QHash<Carton::Faces, QVector<Carton::Vertices> > Carton::m_facesVerticesHash = facesVerticesHash();
+
 Carton::Carton(QObject *parent)
     : QObject(parent)
 	, m_xOffset(400)
@@ -83,7 +85,7 @@ QImage Carton::defaultImage(Faces face, QSize size)
 	return result;
 }
 
-QVector<Carton::Vertices> Carton::verticesOfFace(Faces face)
+QHash<Carton::Faces, QVector<Carton::Vertices> > Carton::facesVerticesHash()
 {
 	static const struct {
 		Faces face;
@@ -103,17 +105,22 @@ QVector<Carton::Vertices> Carton::verticesOfFace(Faces face)
 	static const size_t facesCount = sizeof(verticesOfFaces)/sizeof(verticesOfFaces[0]);
 	static const size_t verticesPerFaceCount = sizeof(verticesOfFaces[0].vertices)/sizeof(verticesOfFaces[0].vertices[0]);
 
-	static QHash<Faces, QVector<Vertices> > verticesOfFaceHash;
-	if (verticesOfFaceHash.empty()) {
+	static QHash<Faces, QVector<Vertices> > result;
+	if (result.empty()) {
 		for (int faceIndex = 0; faceIndex < facesCount; faceIndex++) {
 			QVector<Vertices> vertices(verticesPerFaceCount);
 			for (int verticeIndex = 0; verticeIndex < verticesPerFaceCount; verticeIndex++)
 				vertices[verticeIndex] = verticesOfFaces[faceIndex].vertices[verticeIndex];
-			verticesOfFaceHash[verticesOfFaces[faceIndex].face] = vertices;
+			result[verticesOfFaces[faceIndex].face] = vertices;
 		}
 	}
 
-	Q_ASSERT(verticesOfFaceHash.contains(face));
-	return verticesOfFaceHash[face];
+	return result;
+}
+
+QVector<Carton::Vertices> Carton::verticesOfFace(Faces face)
+{
+	Q_ASSERT(m_facesVerticesHash.contains(face));
+	return m_facesVerticesHash[face];
 }
 

@@ -3,6 +3,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <QImage>
+#include <QtDebug>
 
 class PainterWidget : public QWidget
 {
@@ -26,6 +27,7 @@ private:
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
+	qDebug() << Carton::verticesOfFace(Carton::Top);
 	PainterWidget pw;
 	pw.show();
 	return a.exec();

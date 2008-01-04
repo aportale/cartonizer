@@ -51,6 +51,7 @@ public:
 	void setImage(Faces face, QImage image);
 	QImage image(Faces face) const;
 
+	QSizeF faceSize(Faces face) const;
 	QTransform transform(Faces face) const;
 	void boxVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const;
 	void rotatedVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const;

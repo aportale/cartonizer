@@ -1,5 +1,6 @@
 #include "carton.h"
 #include <QPainter>
+#include <QtDebug>
 #include <QMetaEnum>
 #include <math.h>
 
@@ -10,10 +11,10 @@ const QHash<Carton::Faces, QVector<Carton::Vertices> > Carton::m_facesVerticesHa
 
 Carton::Carton(QObject *parent)
     : QObject(parent)
-	, m_xOffset(m_defaultWidth + 50)
-	, m_yOffset(m_defaultHeight + 50)
-	, m_xRotation(10)
-	, m_yRotation(10)
+	, m_xOffset(300)
+	, m_yOffset(300)
+	, m_xRotation(-2.7)
+	, m_yRotation(0.3)
 	, m_observerHeight(-200)
 	, m_boxWidth(m_defaultWidth)
 	, m_boxHeight(m_defaultHeight)
@@ -21,6 +22,7 @@ Carton::Carton(QObject *parent)
 {
 	setImage(Front, defaultImage(Front, QSize(m_boxWidth, m_boxHeight)));
 	setImage(Left, defaultImage(Left, QSize(m_boxDepth, m_boxHeight)));
+	setImage(Right, defaultImage(Right, QSize(m_boxDepth, m_boxHeight)));
 	setImage(Top, defaultImage(Top, QSize(m_boxWidth, m_boxDepth)));
 }
 
@@ -32,6 +34,19 @@ void Carton::paint(QPaintDevice *paintDevice)
 	painter.setRenderHint(QPainter::Antialiasing, true);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 	painter.setOpacity(0.5);
+
+	painter.setTransform(transform(Front) * QTransform().translate(m_xOffset, m_yOffset));
+	painter.drawImage(0, 0, m_faceImages[Front]);
+
+	painter.setTransform(transform(Left) * QTransform().translate(m_xOffset, m_yOffset));
+	painter.drawImage(0, 0, m_faceImages[Left]);
+
+	painter.setTransform(transform(Right) * QTransform().translate(m_xOffset, m_yOffset));
+	painter.drawImage(0, 0, m_faceImages[Right]);
+
+	painter.setTransform(transform(Top) * QTransform().translate(m_xOffset, m_yOffset));
+	painter.drawImage(0, 0, m_faceImages[Top]);
+
 	painter.restore();
 }
 
@@ -63,9 +78,57 @@ QImage Carton::image(Faces face) const
 	return m_faceImages[face];
 }
 
+QSizeF Carton::faceSize(Faces face) const
+{
+	qreal width;
+	qreal height;
+
+	// width
+	switch (face) {
+		case Left:
+		case Right:
+		case LeftReflection:
+		case RightReflection:
+			width = m_boxDepth;
+			break;
+		default:
+			width = m_boxWidth;
+	}
+
+	// height
+	switch (face) {
+		case Top:
+		case Bottom:
+		case LeftReflection:
+		case RightReflection:
+			height = m_boxDepth;
+			break;
+		default:
+			height = m_boxHeight;
+	}
+
+	return QSizeF(width, height);
+}
+
 QTransform Carton::transform(Faces face) const
 {
 	QTransform result;
+
+	QSizeF originalSize(faceSize(face));
+	QPolygonF original(4);
+	original[0] = QPointF(0,                    0);                     // TopLeft
+	original[1] = QPointF(originalSize.width(), 0);                     // TopRight
+	original[2] = QPointF(originalSize.width(), originalSize.height()), // BottomRight
+	original[3] = QPointF(0,                    originalSize.height()); // BottomLeft
+
+	QPolygonF projected;
+	foreach (const Vertices vertex, m_facesVerticesHash[face])
+		projected << vertex2d(vertex);
+	qDebug() << projected;
+
+	bool possible = QTransform::quadToQuad(original, projected, result);
+	Q_ASSERT(possible);
+
 	return result;
 }
 
@@ -160,7 +223,8 @@ QImage Carton::defaultImage(Faces face, QSize size)
 	painter.drawRect(result.rect().adjusted(3, 3, -4, -4));
 	QString faceCaption =
 		face==Front?"Front"
-		:face==Left?"Side"
+		:face==Left?"Left"
+		:face==Right?"Right"
 		:"Top";
 	QFont font;
 	font.setPixelSize(30);

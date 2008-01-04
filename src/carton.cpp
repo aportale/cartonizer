@@ -217,7 +217,7 @@ void Carton::rotatedVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) cons
 
 QPointF Carton::vertex2d(Vertices vertex) const
 {
-	QPoint result;
+	QPointF result;
 	qreal x, y, z;
 	rotatedVertex3d(vertex, x, y, z);
 

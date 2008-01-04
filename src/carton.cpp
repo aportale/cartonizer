@@ -1,33 +1,54 @@
 #include "carton.h"
 #include <QPainter>
+#include <QMetaEnum>
+#include <math.h>
 
+const qreal Carton::m_defaultWidth = 120.;
+const qreal Carton::m_defaultHeight = 200.;
+const qreal Carton::m_defaultDepth = 80.;
 const QHash<Carton::Faces, QVector<Carton::Vertices> > Carton::m_facesVerticesHash = facesVerticesHash();
 
 Carton::Carton(QObject *parent)
     : QObject(parent)
-	, m_xOffset(400)
-	, m_yOffset(200)
-	, m_xRotation(-10)
-	, m_yRotation(-45)
-//	, m_observerHeight(m_defaultHeight/2)
+	, m_xOffset(m_defaultWidth + 50)
+	, m_yOffset(m_defaultHeight + 50)
+	, m_xRotation(10)
+	, m_yRotation(10)
 	, m_observerHeight(-200)
+	, m_boxWidth(m_defaultWidth)
+	, m_boxHeight(m_defaultHeight)
+	, m_boxDepth(m_defaultDepth)
 {
-	setImage(Front, defaultImage(Front, QSize(m_defaultWidth, m_defaultHeight)));
-	setImage(Left, defaultImage(Left, QSize(m_defaultDepth, m_defaultHeight)));
-	setImage(Top, defaultImage(Top, QSize(m_defaultWidth, m_defaultDepth)));
+	setImage(Front, defaultImage(Front, QSize(m_boxWidth, m_boxHeight)));
+	setImage(Left, defaultImage(Left, QSize(m_boxDepth, m_boxHeight)));
+	setImage(Top, defaultImage(Top, QSize(m_boxWidth, m_boxDepth)));
 }
 
 void Carton::paint(QPaintDevice *paintDevice)
+{
+	paintVertices(paintDevice);
+	QPainter painter(paintDevice);
+	painter.save();
+	painter.setRenderHint(QPainter::Antialiasing, true);
+	painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+	painter.setOpacity(0.5);
+	painter.restore();
+}
+
+void Carton::paintVertices(QPaintDevice *paintDevice)
 {
 	QPainter painter(paintDevice);
 	painter.save();
 	painter.setRenderHint(QPainter::Antialiasing, true);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 	painter.setOpacity(0.5);
+	painter.translate(m_xOffset, m_yOffset);
 
-	painter.setTransform(transform(Front));	painter.drawImage(0, 0, m_faceImages[Front]);
-	painter.setTransform(transform(Left));	painter.drawImage(0, 0, m_faceImages[Left]);
-	painter.setTransform(transform(Top));	painter.drawImage(0, 0, m_faceImages[Top]);
+	QMetaEnum verticesEnum = metaObject()->enumerator(metaObject()->indexOfEnumerator("Vertices"));
+	for (int vertexIndex = 0; vertexIndex < verticesEnum.keyCount(); vertexIndex++) {
+		Vertices vertex = (Vertices)verticesEnum.value(vertexIndex);
+		painter.drawEllipse(vertex2d(vertex), 1.5, 1.5);
+	}
 
 	painter.restore();
 }
@@ -45,6 +66,81 @@ QImage Carton::image(Faces face) const
 QTransform Carton::transform(Faces face) const
 {
 	QTransform result;
+	return result;
+}
+
+void Carton::vertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const
+{
+	// x coordinate
+	switch (vertex) {
+		case LeftTopFront:
+		case LeftBottomFront:
+		case LeftSubFront:
+		case LeftTopBack:
+		case LeftBottomBack:
+		case LeftSubBack:
+			x = -(m_boxWidth / 2);
+			break;
+		default:
+			x = m_boxWidth / 2;
+	}
+
+	// y coordinate
+	switch (vertex) {
+		case LeftTopFront:
+		case LeftTopBack:
+		case RightTopFront:
+		case RightTopBack:
+			y = m_boxHeight;
+			break;
+		case LeftBottomFront:
+		case LeftBottomBack:
+		case RightBottomFront:
+		case RightBottomBack:
+			y = 0;
+			break;
+		default:
+			y = -m_boxHeight;
+	}
+
+	// z coordinate
+	switch (vertex) {
+		case LeftTopBack:
+		case LeftBottomBack:
+		case LeftSubBack:
+		case RightTopBack:
+		case RightBottomBack:
+		case RightSubBack:
+			z = -(m_boxDepth / 2);
+			break;
+		default:
+			z = m_boxDepth / 2;
+	}
+
+	// Rotate vertices
+	// from http://sfx.co.nz/tamahori/thought/shock_3d_howto.html#transforming
+	qreal temp_z = z * cos(m_yRotation) - x      * sin(m_yRotation);
+	x =            z * sin(m_yRotation) + x      * cos(m_yRotation);
+	z =            y * sin(m_xRotation) + temp_z * cos(m_xRotation);
+	y =            y * cos(m_xRotation) - temp_z * sin(m_xRotation);
+}
+
+QPointF Carton::vertex2d(Vertices vertex) const
+{
+	QPoint result;
+	qreal x, y, z;
+	vertex3d(vertex, x, y, z);
+
+	// Project 3D point onto 2D plane
+	// from http://sfx.co.nz/tamahori/thought/shock_3d_howto.html#displaying
+	qreal scalar = 1. / ((z / 900.) + 1.);
+	qreal voodoo = 20. - qMax(qMin(38-24*scalar, 17.), 10.);
+	x *= scalar;
+	y *= scalar;
+
+	result.setX(x);
+	result.setY(y);
+
 	return result;
 }
 
@@ -91,8 +187,8 @@ QHash<Carton::Faces, QVector<Carton::Vertices> > Carton::facesVerticesHash()
 	if (result.empty()) {
 		for (size_t faceIndex = 0; faceIndex < facesCount; faceIndex++) {
 			QVector<Vertices> vertices(verticesPerFaceCount);
-			for (size_t verticeIndex = 0; verticeIndex < verticesPerFaceCount; verticeIndex++)
-				vertices[verticeIndex] = verticesOfFaces[faceIndex].vertices[verticeIndex];
+			for (size_t vertexIndex = 0; vertexIndex < verticesPerFaceCount; vertexIndex++)
+				vertices[vertexIndex] = verticesOfFaces[faceIndex].vertices[vertexIndex];
 			result[verticesOfFaces[faceIndex].face] = vertices;
 		}
 	}

@@ -10,6 +10,8 @@ class QPainter;
 class Carton : public QObject
 {
 	Q_OBJECT
+	Q_ENUMS(Vertices)
+	Q_ENUMS(Faces)
 
 public:
 
@@ -44,19 +46,22 @@ public:
 
 	Carton(QObject *parent = 0);
 	void paint(QPaintDevice *paintDevice);
+	void paintVertices(QPaintDevice *paintDevice);
 
 	void setImage(Faces face, QImage image);
 	QImage image(Faces face) const;
 
 	QTransform transform(Faces face) const;
+	void vertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const;
+	QPointF vertex2d(Vertices vertex) const;
 
 	static QImage defaultImage(Faces face, QSize size);
 
 	static QVector<Vertices> verticesOfFace(Faces face);
 
-	static const int m_defaultWidth = 300;
-	static const int m_defaultHeight = 400;
-	static const int m_defaultDepth = 100;
+	static const qreal m_defaultWidth;
+	static const qreal m_defaultHeight;
+	static const qreal m_defaultDepth;
 	static const QHash<Carton::Faces, QVector<Carton::Vertices> > m_facesVerticesHash;
 
 private:
@@ -67,6 +72,11 @@ private:
 	qreal m_xRotation;
 	qreal m_yRotation;
 	qreal m_observerHeight;
+
+	qreal m_boxWidth;
+	qreal m_boxHeight;
+	qreal m_boxDepth;
+
 	QHash<Faces, QImage> m_faceImages;
 };
 

@@ -138,7 +138,8 @@ QPointF Carton::vertex2d(Vertices vertex) const
 
 	// Project 3D point onto 2D plane
 	// from http://sfx.co.nz/tamahori/thought/shock_3d_howto.html#displaying
-	qreal scalar = 1. / ((z / 900.) + 1.);
+	qreal d = 900.;
+	qreal scalar = 1. / ((z / d) + 1.);
 	qreal voodoo = 20. - qMax(qMin(38-24*scalar, 17.), 10.);
 	x *= scalar;
 	y *= scalar;

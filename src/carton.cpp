@@ -50,44 +50,40 @@ Carton::Carton(QObject *parent)
 
 void Carton::paint(QPaintDevice *paintDevice)
 {
-	paintVertices(paintDevice);
 	QPainter painter(paintDevice);
 	painter.save();
 	painter.setRenderHint(QPainter::Antialiasing, true);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-	painter.setOpacity(0.5);
+//	painter.setOpacity(0.5);
+	paintVertices(&painter);
 
-	painter.setTransform(transform(Front) * QTransform().translate(m_xOffset, m_yOffset));
-	painter.drawImage(0, 0, m_faceImages[Front]);
-
-	painter.setTransform(transform(Left) * QTransform().translate(m_xOffset, m_yOffset));
-	painter.drawImage(0, 0, m_faceImages[Left]);
-
-	painter.setTransform(transform(Right) * QTransform().translate(m_xOffset, m_yOffset));
-	painter.drawImage(0, 0, m_faceImages[Right]);
-
-	painter.setTransform(transform(Top) * QTransform().translate(m_xOffset, m_yOffset));
-	painter.drawImage(0, 0, m_faceImages[Top]);
+	paintFace(&painter, Front);
+	paintFace(&painter, Left);
+	paintFace(&painter, Top);
 
 	painter.restore();
 }
 
-void Carton::paintVertices(QPaintDevice *paintDevice)
+void Carton::paintVertices(QPainter *painter)
 {
-	QPainter painter(paintDevice);
-	painter.save();
-	painter.setRenderHint(QPainter::Antialiasing, true);
-	painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-	painter.setOpacity(0.5);
-	painter.translate(m_xOffset, m_yOffset);
+	painter->save();
+	painter->translate(m_xOffset, m_yOffset);
 
 	QMetaEnum verticesEnum = metaObject()->enumerator(metaObject()->indexOfEnumerator("Vertices"));
 	for (int vertexIndex = 0; vertexIndex < verticesEnum.keyCount(); vertexIndex++) {
 		Vertices vertex = (Vertices)verticesEnum.value(vertexIndex);
-		painter.drawEllipse(vertex2d(vertex), 1.5, 1.5);
+		painter->drawEllipse(vertex2d(vertex), 1.5, 1.5);
 	}
 
-	painter.restore();
+	painter->restore();
+}
+
+void Carton::paintFace(QPainter *painter, Faces face)
+{
+	painter->save();
+	painter->setTransform(transform(face) * QTransform().translate(m_xOffset, m_yOffset));
+	painter->drawImage(0, 0, m_faceImages[face]);
+	painter->restore();
 }
 
 void Carton::setImage(Faces face, QImage image)
@@ -121,8 +117,6 @@ QSizeF Carton::faceSize(Faces face) const
 	switch (face) {
 		case Top:
 		case Bottom:
-		case LeftReflection:
-		case RightReflection:
 			height = m_boxDepth;
 			break;
 		default:

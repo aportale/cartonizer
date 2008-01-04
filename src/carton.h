@@ -42,7 +42,7 @@ public:
 		BackReflection
 	};
 
-    Carton(QObject *parent = 0);
+	Carton(QObject *parent = 0);
 	void paint(QPaintDevice *paintDevice);
 
 	void setImage(Faces face, QImage image);

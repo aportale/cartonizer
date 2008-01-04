@@ -45,24 +45,6 @@ QImage Carton::image(Faces face) const
 QTransform Carton::transform(Faces face) const
 {
 	QTransform result;
-	switch (face) {
-		case Front:
-			result.rotate(m_xRotation, Qt::XAxis);
-			result.rotate(m_yRotation, Qt::YAxis);
-			result.translate(0, -m_observerHeight);
-			break;
-		case Left:
-			result.rotate(m_xRotation, Qt::XAxis);
-			result.rotate(m_yRotation + 90, Qt::YAxis);
-			result.translate(-m_faceImages[Left].width(), -m_observerHeight);
-			break;
-		case Top:
-			result.rotate(88, Qt::XAxis);
-//			result *= QTransform().rotate(-30, Qt::YAxis);
-			result.translate(0, -m_faceImages[Top].height());
-			break;
-	}
-	result *= QTransform().translate(m_xOffset, m_yOffset);
 	return result;
 }
 
@@ -107,9 +89,9 @@ QHash<Carton::Faces, QVector<Carton::Vertices> > Carton::facesVerticesHash()
 
 	static QHash<Faces, QVector<Vertices> > result;
 	if (result.empty()) {
-		for (int faceIndex = 0; faceIndex < facesCount; faceIndex++) {
+		for (size_t faceIndex = 0; faceIndex < facesCount; faceIndex++) {
 			QVector<Vertices> vertices(verticesPerFaceCount);
-			for (int verticeIndex = 0; verticeIndex < verticesPerFaceCount; verticeIndex++)
+			for (size_t verticeIndex = 0; verticeIndex < verticesPerFaceCount; verticeIndex++)
 				vertices[verticeIndex] = verticesOfFaces[faceIndex].vertices[verticeIndex];
 			result[verticesOfFaces[faceIndex].face] = vertices;
 		}
@@ -123,4 +105,3 @@ QVector<Carton::Vertices> Carton::verticesOfFace(Faces face)
 	Q_ASSERT(m_facesVerticesHash.contains(face));
 	return m_facesVerticesHash[face];
 }
-

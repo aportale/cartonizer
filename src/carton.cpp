@@ -69,7 +69,7 @@ QTransform Carton::transform(Faces face) const
 	return result;
 }
 
-void Carton::vertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const
+void Carton::boxVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const
 {
 	// x coordinate
 	switch (vertex) {
@@ -116,6 +116,11 @@ void Carton::vertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const
 		default:
 			z = m_boxDepth / 2;
 	}
+}
+
+void Carton::rotatedVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const
+{
+	boxVertex3d(vertex, x, y, z);
 
 	// Rotate vertices
 	// from http://sfx.co.nz/tamahori/thought/shock_3d_howto.html#transforming
@@ -129,7 +134,7 @@ QPointF Carton::vertex2d(Vertices vertex) const
 {
 	QPoint result;
 	qreal x, y, z;
-	vertex3d(vertex, x, y, z);
+	rotatedVertex3d(vertex, x, y, z);
 
 	// Project 3D point onto 2D plane
 	// from http://sfx.co.nz/tamahori/thought/shock_3d_howto.html#displaying

@@ -52,7 +52,8 @@ public:
 	QImage image(Faces face) const;
 
 	QTransform transform(Faces face) const;
-	void vertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const;
+	void boxVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const;
+	void rotatedVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const;
 	QPointF vertex2d(Vertices vertex) const;
 
 	static QImage defaultImage(Faces face, QSize size);

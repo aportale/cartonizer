@@ -26,9 +26,9 @@
 #include <QMetaEnum>
 #include <math.h>
 
-const qreal Carton::m_defaultWidth = 120.;
+const qreal Carton::m_defaultWidth = 140.;
 const qreal Carton::m_defaultHeight = 200.;
-const qreal Carton::m_defaultDepth = 80.;
+const qreal Carton::m_defaultDepth = 60.;
 const QHash<Carton::Faces, QVector<Carton::Vertices> > Carton::m_facesVerticesHash = facesVerticesHash();
 
 Carton::Carton(QObject *parent)
@@ -42,10 +42,6 @@ Carton::Carton(QObject *parent)
 	, m_boxHeight(m_defaultHeight)
 	, m_boxDepth(m_defaultDepth)
 {
-	setImage(Front, defaultImage(Front, QSize(m_boxWidth, m_boxHeight)));
-	setImage(Left, defaultImage(Left, QSize(m_boxDepth, m_boxHeight)));
-	setImage(Right, defaultImage(Right, QSize(m_boxDepth, m_boxHeight)));
-	setImage(Top, defaultImage(Top, QSize(m_boxWidth, m_boxDepth)));
 }
 
 void Carton::paint(QPaintDevice *paintDevice)
@@ -82,18 +78,26 @@ void Carton::paintFace(QPainter *painter, Faces face)
 {
 	painter->save();
 	painter->setTransform(transform(face) * QTransform().translate(m_xOffset, m_yOffset));
-	painter->drawImage(0, 0, m_faceImages[face]);
+	paintFaceTexture(painter, face);
 	painter->restore();
 }
 
-void Carton::setImage(Faces face, QImage image)
+void Carton::paintFaceTexture(QPainter *painter, Faces face)
 {
-	m_faceImages[face] = image;
-}
-
-QImage Carton::image(Faces face) const
-{
-	return m_faceImages[face];
+	QRect faceRect(QPoint(0, 0), faceSize(face).toSize());
+	painter->setBrush(Qt::black);
+	painter->drawRect(faceRect);
+	painter->setBrush(Qt::white);
+	painter->drawRect(faceRect.adjusted(3, 3, -4, -4));
+	QString faceCaption =
+		face==Front?"Front"
+		:face==Left?"Left"
+		:face==Right?"Right"
+		:"Top";
+	QFont font;
+	font.setPixelSize(30);
+	painter->setFont(font);
+	painter->drawText(faceRect, Qt::AlignCenter, faceCaption);
 }
 
 QSizeF Carton::faceSize(Faces face) const
@@ -226,26 +230,6 @@ QPointF Carton::vertex2d(Vertices vertex) const
 	result.setX(x);
 	result.setY(y);
 
-	return result;
-}
-
-QImage Carton::defaultImage(Faces face, QSize size)
-{
-	QImage result(size, QImage::Format_RGB32);
-	QPainter painter(&result);
-	painter.setBrush(Qt::black);
-	painter.drawRect(result.rect());
-	painter.setBrush(Qt::white);
-	painter.drawRect(result.rect().adjusted(3, 3, -4, -4));
-	QString faceCaption =
-		face==Front?"Front"
-		:face==Left?"Left"
-		:face==Right?"Right"
-		:"Top";
-	QFont font;
-	font.setPixelSize(30);
-	painter.setFont(font);
-	painter.drawText(result.rect(), Qt::AlignCenter, faceCaption);
 	return result;
 }
 

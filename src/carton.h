@@ -70,9 +70,7 @@ public:
 	void paint(QPaintDevice *paintDevice);
 	void paintVertices(QPainter *painter);
 	void paintFace(QPainter *painter, Faces face);
-
-	void setImage(Faces face, QImage image);
-	QImage image(Faces face) const;
+	void paintFaceTexture(QPainter *painter, Faces face);
 
 	QSizeF faceSize(Faces face) const;
 	QTransform transform(Faces face) const;
@@ -101,8 +99,6 @@ private:
 	qreal m_boxWidth;
 	qreal m_boxHeight;
 	qreal m_boxDepth;
-
-	QHash<Faces, QImage> m_faceImages;
 };
 
 #endif

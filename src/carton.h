@@ -71,6 +71,7 @@ public:
 	void paintVertices(QPainter *painter);
 	void paintFace(QPainter *painter, Faces face);
 	void paintFaceTexture(QPainter *painter, Faces face);
+	void paintFaceReflectionTexture(QPainter *painter, Faces face);
 
 	QSizeF faceSize(Faces face) const;
 	QTransform transform(Faces face) const;

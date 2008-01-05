@@ -51,11 +51,15 @@ void Carton::paint(QPaintDevice *paintDevice)
 	painter.setRenderHint(QPainter::Antialiasing, true);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 //	painter.setOpacity(0.5);
-	paintVertices(&painter);
+//	paintVertices(&painter);
 
 	paintFace(&painter, Front);
 	paintFace(&painter, Left);
+//	paintFace(&painter, Right);
 	paintFace(&painter, Top);
+	paintFace(&painter, FrontReflection);
+	paintFace(&painter, LeftReflection);
+//	paintFace(&painter, RightReflection);
 
 	painter.restore();
 }
@@ -77,14 +81,31 @@ void Carton::paintVertices(QPainter *painter)
 void Carton::paintFace(QPainter *painter, Faces face)
 {
 	painter->save();
-	painter->setTransform(transform(face) * QTransform().translate(m_xOffset, m_yOffset));
-	paintFaceTexture(painter, face);
+	QTransform faceTransform(transform(face) * QTransform().translate(m_xOffset, m_yOffset));
+	painter->setTransform(faceTransform);
+	switch (face) {
+		case FrontReflection:
+			paintFaceReflectionTexture(painter, Front);
+			break;
+		case LeftReflection:
+			paintFaceReflectionTexture(painter, Left);
+			break;
+		case RightReflection:
+			paintFaceReflectionTexture(painter, Right);
+			break;
+		case BackReflection:
+			paintFaceReflectionTexture(painter, Back);
+			break;
+		default:
+			paintFaceTexture(painter, face);
+	}
 	painter->restore();
 }
 
 void Carton::paintFaceTexture(QPainter *painter, Faces face)
 {
 	QRect faceRect(QPoint(0, 0), faceSize(face).toSize());
+	painter->save();
 	painter->setBrush(Qt::black);
 	painter->drawRect(faceRect);
 	painter->setBrush(Qt::white);
@@ -95,9 +116,17 @@ void Carton::paintFaceTexture(QPainter *painter, Faces face)
 		:face==Right?"Right"
 		:"Top";
 	QFont font;
-	font.setPixelSize(30);
+	font.setPixelSize(20);
 	painter->setFont(font);
 	painter->drawText(faceRect, Qt::AlignCenter, faceCaption);
+	painter->restore();
+}
+
+void Carton::paintFaceReflectionTexture(QPainter *painter, Faces face)
+{
+	painter->save();
+	paintFaceTexture(painter, face);
+	painter->restore();
 }
 
 QSizeF Carton::faceSize(Faces face) const
@@ -245,10 +274,10 @@ QHash<Carton::Faces, QVector<Carton::Vertices> > Carton::facesVerticesHash()
 		{Back,            {RightTopBack, LeftTopBack, LeftBottomBack, RightBottomBack}},
 		{Top,             {LeftTopBack, RightTopBack, RightTopFront, LeftTopFront}},
 		{Bottom,          {LeftBottomBack, RightBottomBack, RightBottomFront, LeftBottomFront}},
-		{FrontReflection, {LeftBottomFront, RightBottomFront, RightSubFront, LeftSubFront}},
-		{LeftReflection,  {LeftBottomBack, LeftBottomFront, LeftSubFront, LeftSubBack}},
-		{RightReflection, {RightBottomFront, RightBottomBack, RightSubBack, LeftSubBack}},
-		{BackReflection,  {RightBottomBack, LeftBottomBack, LeftSubBack, RightSubBack}}
+		{FrontReflection, {LeftSubFront, RightSubFront, RightBottomFront, LeftBottomFront}},
+		{LeftReflection,  {LeftSubBack, LeftSubFront, LeftBottomFront, LeftBottomBack}},
+		{RightReflection, {RightSubFront, RightSubBack, RightBottomBack, RightBottomFront}},
+		{BackReflection,  {RightSubBack, LeftSubBack, LeftBottomBack, RightBottomBack}}
 	};
 	static const size_t facesCount = sizeof(verticesOfFaces)/sizeof(verticesOfFaces[0]);
 	static const size_t verticesPerFaceCount = sizeof(verticesOfFaces[0].vertices)/sizeof(verticesOfFaces[0].vertices[0]);

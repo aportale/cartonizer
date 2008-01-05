@@ -68,7 +68,6 @@ public:
 
 	Carton(QObject *parent = 0);
 	void paint(QPaintDevice *paintDevice);
-	void paintVertices(QPainter *painter);
 	void paintFace(QPainter *painter, Faces face);
 	void paintFaceTexture(QPainter *painter, Faces face);
 	void paintFaceReflectionTexture(QPainter *painter, Faces face);

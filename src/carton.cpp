@@ -65,20 +65,6 @@ void Carton::paint(QPaintDevice *paintDevice)
 	painter.restore();
 }
 
-void Carton::paintVertices(QPainter *painter)
-{
-	painter->save();
-	painter->translate(m_xOffset, m_yOffset);
-
-	QMetaEnum verticesEnum = metaObject()->enumerator(metaObject()->indexOfEnumerator("Vertices"));
-	for (int vertexIndex = 0; vertexIndex < verticesEnum.keyCount(); vertexIndex++) {
-		Vertices vertex = (Vertices)verticesEnum.value(vertexIndex);
-		painter->drawEllipse(vertex2d(vertex), 1.5, 1.5);
-	}
-
-	painter->restore();
-}
-
 void Carton::paintFace(QPainter *painter, Faces face)
 {
 	painter->save();
@@ -128,18 +114,20 @@ void Carton::paintFaceReflectionTexture(QPainter *painter, Faces face)
 	QSizeF faceSize(faceSize(face));
 	QImage blendImage(faceSize.toSize(), QImage::Format_ARGB32);
 	QPainter blendPainter(&blendImage);
+	paintFaceTexture(&blendPainter, emittingFace);
+	blendPainter.end();
+
 	QImage alphaImage(faceSize.toSize(), QImage::Format_ARGB32);
 	QPainter alphaPainter(&alphaImage);
-
-	painter->save();
-	paintFaceTexture(&blendPainter, emittingFace);
-
 	QLinearGradient alphaGradient(0, faceSize.height() * (1 - m_reflectionSize), 0, faceSize.height());
 	alphaGradient.setColorAt(0, Qt::black);
 	alphaGradient.setColorAt(1, Qt::lightGray);
 	alphaPainter.setPen(Qt::NoPen);
 	alphaPainter.fillRect(QRect(0, 0, faceSize.width(), faceSize.height()), alphaGradient);
 	blendImage.setAlphaChannel(alphaImage);
+	alphaPainter.end();
+
+	painter->save();
 	painter->drawImage(0, 0, blendImage);
 	painter->restore();
 }

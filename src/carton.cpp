@@ -41,6 +41,7 @@ Carton::Carton(QObject *parent)
 	, m_boxWidth(m_defaultWidth)
 	, m_boxHeight(m_defaultHeight)
 	, m_boxDepth(m_defaultDepth)
+	, m_reflectionSize(0.4)
 {
 }
 
@@ -85,16 +86,10 @@ void Carton::paintFace(QPainter *painter, Faces face)
 	painter->setTransform(faceTransform);
 	switch (face) {
 		case FrontReflection:
-			paintFaceReflectionTexture(painter, Front);
-			break;
-		case LeftReflection:
-			paintFaceReflectionTexture(painter, Left);
-			break;
-		case RightReflection:
-			paintFaceReflectionTexture(painter, Right);
-			break;
 		case BackReflection:
-			paintFaceReflectionTexture(painter, Back);
+		case LeftReflection:
+		case RightReflection:
+			paintFaceReflectionTexture(painter, face);
 			break;
 		default:
 			paintFaceTexture(painter, face);
@@ -124,8 +119,28 @@ void Carton::paintFaceTexture(QPainter *painter, Faces face)
 
 void Carton::paintFaceReflectionTexture(QPainter *painter, Faces face)
 {
+	Faces emittingFace =
+		face == FrontReflection?Front
+		:face == BackReflection?Back
+		:face == LeftReflection?Left
+		:/* face == RightReflection? */Right;
+
+	QSizeF faceSize(faceSize(face));
+	QImage blendImage(faceSize.toSize(), QImage::Format_ARGB32);
+	QPainter blendPainter(&blendImage);
+	QImage alphaImage(faceSize.toSize(), QImage::Format_ARGB32);
+	QPainter alphaPainter(&alphaImage);
+
 	painter->save();
-	paintFaceTexture(painter, face);
+	paintFaceTexture(&blendPainter, emittingFace);
+
+	QLinearGradient alphaGradient(0, faceSize.height() * (1 - m_reflectionSize), 0, faceSize.height());
+	alphaGradient.setColorAt(0, Qt::black);
+	alphaGradient.setColorAt(1, Qt::lightGray);
+	alphaPainter.setPen(Qt::NoPen);
+	alphaPainter.fillRect(QRect(0, 0, faceSize.width(), faceSize.height()), alphaGradient);
+	blendImage.setAlphaChannel(alphaImage);
+	painter->drawImage(0, 0, blendImage);
 	painter->restore();
 }
 
@@ -170,12 +185,7 @@ QTransform Carton::transform(Faces face) const
 	original[2] = QPointF(originalSize.width(), originalSize.height()), // BottomRight
 	original[3] = QPointF(0,                    originalSize.height()); // BottomLeft
 
-	QPolygonF projected;
-	foreach (const Vertices vertex, m_facesVerticesHash[face])
-		projected << vertex2d(vertex);
-	qDebug() << projected;
-
-	bool possible = QTransform::quadToQuad(original, projected, result);
+	bool possible = QTransform::quadToQuad(original, face2d(face), result);
 	Q_ASSERT(possible);
 
 	return result;
@@ -259,6 +269,14 @@ QPointF Carton::vertex2d(Vertices vertex) const
 	result.setX(x);
 	result.setY(y);
 
+	return result;
+}
+
+QPolygonF Carton::face2d(Faces face) const
+{
+	QPolygonF result;
+	foreach (const Vertices vertex, m_facesVerticesHash[face])
+		result << vertex2d(vertex);
 	return result;
 }
 

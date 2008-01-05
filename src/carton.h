@@ -78,6 +78,7 @@ public:
 	void boxVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const;
 	void rotatedVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const;
 	QPointF vertex2d(Vertices vertex) const;
+	QPolygonF face2d(Faces face) const;
 
 	static QImage defaultImage(Faces face, QSize size);
 
@@ -100,6 +101,8 @@ private:
 	qreal m_boxWidth;
 	qreal m_boxHeight;
 	qreal m_boxDepth;
+
+	qreal m_reflectionSize;
 };
 
 #endif

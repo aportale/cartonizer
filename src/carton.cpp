@@ -111,7 +111,7 @@ void Carton::paintFaceReflectionTexture(QPainter *painter, Faces face)
 		:face == LeftReflection?Left
 		:/* face == RightReflection? */Right;
 
-	QSizeF faceSize(faceSize(face));
+	QSizeF faceSize(this->faceSize(face));
 	QImage blendImage(faceSize.toSize(), QImage::Format_ARGB32);
 	QPainter blendPainter(&blendImage);
 	paintFaceTexture(&blendPainter, emittingFace);
@@ -123,7 +123,7 @@ void Carton::paintFaceReflectionTexture(QPainter *painter, Faces face)
 	alphaGradient.setColorAt(0, Qt::black);
 	alphaGradient.setColorAt(1, Qt::lightGray);
 	alphaPainter.setPen(Qt::NoPen);
-	alphaPainter.fillRect(QRect(0, 0, faceSize.width(), faceSize.height()), alphaGradient);
+	alphaPainter.fillRect(QRectF(0, 0, faceSize.width(), faceSize.height()), alphaGradient);
 	blendImage.setAlphaChannel(alphaImage);
 	alphaPainter.end();
 

@@ -28,10 +28,22 @@
 class Cartonizer : public Carton
 {
     Q_OBJECT
+	Q_PROPERTY(qreal xRotation READ xRotation WRITE setXRotation)
+	Q_PROPERTY(qreal yRotation READ yRotation WRITE setYRotation)
+	Q_PROPERTY(qreal reflectionSize READ reflectionSize WRITE setReflectionSize)
 
 public:
     Cartonizer(QObject *parent = 0);
+
 	void paintFaceTexture(QPainter *painter, Faces face);
+	qreal xRotation() const;
+	qreal yRotation() const;
+	qreal reflectionSize() const;
+
+public slots:
+	void setXRotation(qreal rotation);
+	void setYRotation(qreal rotation);
+	void setReflectionSize(qreal size);
 };
 
 #endif

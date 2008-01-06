@@ -47,3 +47,33 @@ void Cartonizer::paintFaceTexture(QPainter *painter, Faces face)
 	painter->drawText(faceRect, Qt::AlignCenter, faceCaption);
 	painter->restore();
 }
+
+qreal Cartonizer::xRotation() const
+{
+	return m_xRotation;
+}
+
+qreal Cartonizer::yRotation() const
+{
+	return m_yRotation;
+}
+
+qreal Cartonizer::reflectionSize() const
+{
+	return m_reflectionSize;
+}
+
+void Cartonizer::setXRotation(qreal rotation)
+{
+	m_xRotation = rotation;
+}
+
+void Cartonizer::setYRotation(qreal rotation)
+{
+	m_yRotation = rotation;
+}
+
+void Cartonizer::setReflectionSize(qreal size)
+{
+	m_reflectionSize = size;
+}

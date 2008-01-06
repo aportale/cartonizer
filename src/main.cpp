@@ -25,6 +25,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <QImage>
+#include <QVariant>
 #include <QtDebug>
 
 class PainterWidget : public QWidget
@@ -34,6 +35,9 @@ public:
 		: QWidget(parent)
 	{
 		m_cartonizer = new Cartonizer(this);
+		m_cartonizer->setProperty("xRotation", -2.);
+		m_cartonizer->setProperty("yRotation", 1.2);
+		m_cartonizer->setProperty("reflectionSize", .5);
 		QImage frontImage("");
 	}
 

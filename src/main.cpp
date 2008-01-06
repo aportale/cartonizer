@@ -50,11 +50,20 @@ private:
 	Cartonizer *m_cartonizer;
 };
 
+void savePng()
+{
+	Cartonizer cartonizer;
+	QImage pngImage(800, 800, QImage::Format_ARGB32);
+	pngImage.fill(qRgba(255, 255, 255, 0));
+	cartonizer.paint(&pngImage);
+	pngImage.save("carton.png");
+}
+
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-	qDebug() << Carton::verticesOfFace(Carton::Top);
 	PainterWidget pw;
 	pw.show();
 	return a.exec();
+//	savePng();
 }

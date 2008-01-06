@@ -9,48 +9,41 @@
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation; either version 2 of the License, or
 	(at your option) any later version.
-	
+
 	Cartonizer is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
-	
+
 	You should have received a copy of the GNU General Public License
-	along with Cartonizer; if not, write to the Free Software
+	along with PosteRazor; if not, write to the Free Software
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
 #include "cartonizer.h"
-#include <QApplication>
-#include <QWidget>
 #include <QPainter>
-#include <QImage>
-#include <QtDebug>
 
-class PainterWidget : public QWidget
+Cartonizer::Cartonizer(QObject *parent)
+: Carton(parent)
 {
-public:
-	PainterWidget(QWidget *parent = 0)
-		: QWidget(parent)
-	{
-		m_cartonizer = new Cartonizer(this);
-		QImage frontImage("");
-	}
+}
 
-	void paintEvent(QPaintEvent *event)
-	{
-		m_cartonizer->paint(this);
-	}
-
-private:
-	Cartonizer *m_cartonizer;
-};
-
-int main(int argc, char *argv[])
+void Cartonizer::paintFaceTexture(QPainter *painter, Faces face)
 {
-	QApplication a(argc, argv);
-	qDebug() << Carton::verticesOfFace(Carton::Top);
-	PainterWidget pw;
-	pw.show();
-	return a.exec();
+	QRect faceRect(QPoint(0, 0), faceSize(face).toSize());
+	painter->save();
+	painter->setBrush(Qt::black);
+	painter->drawRect(faceRect);
+	painter->setBrush(Qt::white);
+	painter->drawRect(faceRect.adjusted(3, 3, -4, -4));
+	QString faceCaption =
+		face==Front?"Front"
+		:face==Left?"Left"
+		:face==Right?"Right"
+		:"Top";
+	QFont font;
+	font.setPixelSize(20);
+	painter->setFont(font);
+	painter->drawText(faceRect, Qt::AlignCenter, faceCaption);
+	painter->restore();
 }

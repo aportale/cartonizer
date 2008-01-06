@@ -20,7 +20,9 @@
 
 HEADERS += \
 	carton.h \
+	cartonizer.h
 
 SOURCES += \
 	carton.cpp \
+	cartonizer.cpp \
 	main.cpp

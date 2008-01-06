@@ -83,26 +83,6 @@ void Carton::paintFace(QPainter *painter, Faces face)
 	painter->restore();
 }
 
-void Carton::paintFaceTexture(QPainter *painter, Faces face)
-{
-	QRect faceRect(QPoint(0, 0), faceSize(face).toSize());
-	painter->save();
-	painter->setBrush(Qt::black);
-	painter->drawRect(faceRect);
-	painter->setBrush(Qt::white);
-	painter->drawRect(faceRect.adjusted(3, 3, -4, -4));
-	QString faceCaption =
-		face==Front?"Front"
-		:face==Left?"Left"
-		:face==Right?"Right"
-		:"Top";
-	QFont font;
-	font.setPixelSize(20);
-	painter->setFont(font);
-	painter->drawText(faceRect, Qt::AlignCenter, faceCaption);
-	painter->restore();
-}
-
 void Carton::paintFaceReflectionTexture(QPainter *painter, Faces face)
 {
 	Faces emittingFace =

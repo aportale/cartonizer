@@ -9,48 +9,29 @@
 	it under the terms of the GNU General Public License as published by
 	the Free Software Foundation; either version 2 of the License, or
 	(at your option) any later version.
-	
+
 	Cartonizer is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
-	
+
 	You should have received a copy of the GNU General Public License
-	along with Cartonizer; if not, write to the Free Software
+	along with PosteRazor; if not, write to the Free Software
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
-#include "cartonizer.h"
-#include <QApplication>
-#include <QWidget>
-#include <QPainter>
-#include <QImage>
-#include <QtDebug>
+#ifndef CARTONIZER_H
+#define CARTONIZER_H
 
-class PainterWidget : public QWidget
+#include "carton.h"
+
+class Cartonizer : public Carton
 {
+    Q_OBJECT
+
 public:
-	PainterWidget(QWidget *parent = 0)
-		: QWidget(parent)
-	{
-		m_cartonizer = new Cartonizer(this);
-		QImage frontImage("");
-	}
-
-	void paintEvent(QPaintEvent *event)
-	{
-		m_cartonizer->paint(this);
-	}
-
-private:
-	Cartonizer *m_cartonizer;
+    Cartonizer(QObject *parent = 0);
+	void paintFaceTexture(QPainter *painter, Faces face);
 };
 
-int main(int argc, char *argv[])
-{
-	QApplication a(argc, argv);
-	qDebug() << Carton::verticesOfFace(Carton::Top);
-	PainterWidget pw;
-	pw.show();
-	return a.exec();
-}
+#endif

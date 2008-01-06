@@ -69,7 +69,7 @@ public:
 	Carton(QObject *parent = 0);
 	void paint(QPaintDevice *paintDevice);
 	void paintFace(QPainter *painter, Faces face);
-	void paintFaceTexture(QPainter *painter, Faces face);
+	virtual void paintFaceTexture(QPainter *painter, Faces face) = 0;
 	void paintFaceReflectionTexture(QPainter *painter, Faces face);
 
 	QSizeF faceSize(Faces face) const;
@@ -88,9 +88,7 @@ public:
 	static const qreal m_defaultDepth;
 	static const QHash<Carton::Faces, QVector<Carton::Vertices> > m_facesVerticesHash;
 
-private:
-	static QHash<Carton::Faces, QVector<Carton::Vertices> > facesVerticesHash();
-
+protected:
 	qreal m_xOffset;
 	qreal m_yOffset;
 	qreal m_xRotation;
@@ -102,6 +100,9 @@ private:
 	qreal m_boxDepth;
 
 	qreal m_reflectionSize;
+
+private:
+	static QHash<Carton::Faces, QVector<Carton::Vertices> > facesVerticesHash();
 };
 
 #endif

@@ -36,6 +36,9 @@ public:
 
 	void setModelAndView(QObject *model, QWidget *view);
 
+signals:
+	void cartonChanged();
+
 private slots:
 	void handleViewPropertyChanged(const char *name, const QVariant &value);
 

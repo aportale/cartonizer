@@ -37,9 +37,11 @@ void CartonizerController::setModelAndView(QObject *model, QWidget *view)
 	m_view = view;
 	connect(view, SIGNAL(needsPreviewPaint(QPaintDevice *)), model, SLOT(paint(QPaintDevice *)));
 	connect(view, SIGNAL(propertyChanged(const char*, const QVariant&)), SLOT(handleViewPropertyChanged(const char*, const QVariant&)));
+	connect(this, SIGNAL(cartonChanged()), view, SLOT(updatePreview()));
 }
 
 void CartonizerController::handleViewPropertyChanged(const char *name, const QVariant &value)
 {
 	m_model->setProperty(name, value);
+	emit cartonChanged();
 }

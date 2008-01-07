@@ -14,6 +14,9 @@ signals:
 	void propertyChanged(const char *name, const QVariant &value);
 	void needsPreviewPaint(QPaintDevice *paintDevice);
 
+public slots:
+	void updatePreview();
+
 private slots:
 	void handleXRotationChanged(double rotation);
 	void handleYRotationChanged(double rotation);

@@ -9,6 +9,11 @@ CartonizerMainWindow::CartonizerMainWindow(QWidget *parent)
 	connect(m_previewWidget, SIGNAL(needsPaint(QPaintDevice *)), this, SIGNAL(needsPreviewPaint(QPaintDevice *)));
 }
 
+void CartonizerMainWindow::updatePreview()
+{
+	m_previewWidget->update();
+}
+
 void CartonizerMainWindow::handleXRotationChanged(double rotation)
 {
 	emit propertyChanged("xRotation", rotation);

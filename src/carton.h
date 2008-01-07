@@ -86,6 +86,7 @@ public:
 	static const qreal m_defaultHeight;
 	static const qreal m_defaultDepth;
 	static const QHash<Carton::Faces, QVector<Carton::Vertices> > m_facesVerticesHash;
+	static const qreal PI;
 
 public slots:
 	void paint(QPaintDevice *paintDevice);

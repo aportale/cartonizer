@@ -30,6 +30,7 @@ const qreal Carton::m_defaultWidth = 140.;
 const qreal Carton::m_defaultHeight = 200.;
 const qreal Carton::m_defaultDepth = 60.;
 const QHash<Carton::Faces, QVector<Carton::Vertices> > Carton::m_facesVerticesHash = facesVerticesHash();
+const qreal Carton::PI = 3.14159265358979323846; // Source: http://en.wikipedia.org/wiki/Pi
 
 Carton::Carton(QObject *parent)
     : QObject(parent)
@@ -212,12 +213,15 @@ void Carton::rotatedVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) cons
 {
 	boxVertex3d(vertex, x, y, z);
 
+	qreal xRotation = (m_xRotation + 180) / PI / 18;
+	qreal yRotation = m_yRotation / PI / 18;
+
 	// Rotate vertices
 	// from http://sfx.co.nz/tamahori/thought/shock_3d_howto.html#transforming
-	qreal temp_z = z * cos(m_yRotation) - x      * sin(m_yRotation);
-	x =            z * sin(m_yRotation) + x      * cos(m_yRotation);
-	z =            y * sin(m_xRotation) + temp_z * cos(m_xRotation);
-	y =            y * cos(m_xRotation) - temp_z * sin(m_xRotation);
+	qreal temp_z = z * cos(yRotation) - x      * sin(yRotation);
+	x =            z * sin(yRotation) + x      * cos(yRotation);
+	z =            y * sin(xRotation) + temp_z * cos(xRotation);
+	y =            y * cos(xRotation) - temp_z * sin(xRotation);
 }
 
 QPointF Carton::vertex2d(Vertices vertex) const

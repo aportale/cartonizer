@@ -22,11 +22,18 @@ HEADERS += \
 	carton.h \
 	cartonizer.h \
 	cartonizercontroller.h \
-	cartonizercommands.h
+	cartonizercommands.h \
+	cartonizermainwindow.h \
+	cartonizerpreviewwidget.h
 
 SOURCES += \
 	carton.cpp \
 	cartonizer.cpp \
 	cartonizercontroller.cpp \
 	cartonizercommands.cpp \
+	cartonizermainwindow.cpp \
+	cartonizerpreviewwidget.cpp \
 	main.cpp
+
+FORMS += \
+	cartonizermainwindow.ui

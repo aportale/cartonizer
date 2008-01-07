@@ -67,7 +67,6 @@ public:
 	};
 
 	Carton(QObject *parent = 0);
-	void paint(QPaintDevice *paintDevice);
 	void paintFace(QPainter *painter, Faces face);
 	virtual void paintFaceTexture(QPainter *painter, Faces face) = 0;
 	void paintFaceReflectionTexture(QPainter *painter, Faces face);
@@ -87,6 +86,9 @@ public:
 	static const qreal m_defaultHeight;
 	static const qreal m_defaultDepth;
 	static const QHash<Carton::Faces, QVector<Carton::Vertices> > m_facesVerticesHash;
+
+public slots:
+	void paint(QPaintDevice *paintDevice);
 
 protected:
 	qreal m_xOffset;

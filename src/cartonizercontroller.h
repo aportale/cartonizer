@@ -25,12 +25,23 @@
 
 #include <QObject>
 
+class QPaintDevice;
+
 class CartonizerController : public QObject
 {
 	Q_OBJECT
 
 public:
 	CartonizerController(QObject *parent = 0);
+
+	void setModelAndView(QObject *model, QWidget *view);
+
+private slots:
+	void handleViewPropertyChanged(const char *name, const QVariant &value);
+
+private:
+	QObject *m_model;
+	QWidget *m_view;
 };
 
 #endif

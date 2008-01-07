@@ -21,8 +21,25 @@
 */
 
 #include "cartonizercontroller.h"
+#include <QWidget>
+#include <QVariant>
 
 CartonizerController::CartonizerController(QObject *parent)
 	: QObject(parent)
+	, m_model(NULL)
+	, m_view(NULL)
 {
+}
+
+void CartonizerController::setModelAndView(QObject *model, QWidget *view)
+{
+	m_model = model;
+	m_view = view;
+	connect(view, SIGNAL(needsPreviewPaint(QPaintDevice *)), model, SLOT(paint(QPaintDevice *)));
+	connect(view, SIGNAL(propertyChanged(const char*, const QVariant&)), SLOT(handleViewPropertyChanged(const char*, const QVariant&)));
+}
+
+void CartonizerController::handleViewPropertyChanged(const char *name, const QVariant &value)
+{
+	m_model->setProperty(name, value);
 }

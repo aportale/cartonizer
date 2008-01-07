@@ -21,6 +21,8 @@
 */
 
 #include "cartonizer.h"
+#include "cartonizercontroller.h"
+#include "cartonizermainwindow.h"
 #include <QApplication>
 #include <QWidget>
 #include <QPainter>
@@ -62,8 +64,13 @@ void savePng()
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-	PainterWidget pw;
-	pw.show();
-	return a.exec();
+//	PainterWidget pw;
+//	pw.show();
 //	savePng();
+	Cartonizer cartonizer;
+	CartonizerController controller;
+	CartonizerMainWindow w;
+	controller.setModelAndView(&cartonizer, &w);
+	w.show();
+	return a.exec();
 }

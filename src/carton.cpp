@@ -265,14 +265,14 @@ QPolygonF Carton::face2d(Faces face) const
 bool Carton::isFaceVisibleFromFront(Faces face) const
 {
 	// 2D Polygon Backface Culling
-	const QPolygonF face2d(face2d(face));
+	const QPolygonF vertices2d(face2d(face));
 	qreal
-		x1 = face2d.at(0).x(),
-		y1 = face2d.at(0).y(),
-		x2 = face2d.at(1).x(),
-		y2 = face2d.at(1).y(),
-		x3 = face2d.at(2).x(),
-		y3 = face2d.at(2).y();
+		x1 = vertices2d.at(0).x(),
+		y1 = vertices2d.at(0).y(),
+		x2 = vertices2d.at(1).x(),
+		y2 = vertices2d.at(1).y(),
+		x3 = vertices2d.at(2).x(),
+		y3 = vertices2d.at(2).y();
 
 	// code line from http://www.cgafaq.info/wiki/2D_Polygon_Backface_Culling
 	return (x1-x2)*(y3-y2)-(y1-y2)*(x3-x2) < 0;

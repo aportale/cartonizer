@@ -224,8 +224,8 @@ void Carton::rotatedVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) cons
 {
 	boxVertex3d(vertex, x, y, z);
 
-	qreal xRotation = (m_xRotation - 360) * PI / 360.;
-	qreal yRotation = m_yRotation * PI / 360.;
+	qreal xRotation = (m_xRotation - 180) * PI / 180.;
+	qreal yRotation = m_yRotation * PI / 180.;
 
 	// Rotate vertices
 	// from http://sfx.co.nz/tamahori/thought/shock_3d_howto.html#transforming

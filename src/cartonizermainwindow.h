@@ -42,6 +42,7 @@ public slots:
 private slots:
 	void handleXRotationChanged(double rotation);
 	void handleYRotationChanged(double rotation);
+	void handleFocalLengthChanged(double length);
 };
 
 #endif

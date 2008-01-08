@@ -98,6 +98,7 @@ protected:
 	qreal m_xRotation;
 	qreal m_yRotation;
 	qreal m_observerHeight;
+	qreal m_focalLength;
 
 	qreal m_boxWidth;
 	qreal m_boxHeight;

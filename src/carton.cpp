@@ -39,6 +39,7 @@ Carton::Carton(QObject *parent)
 	, m_xRotation(0)
 	, m_yRotation(0)
 	, m_observerHeight(-200)
+	, m_focalLength(900)
 	, m_boxWidth(m_defaultWidth)
 	, m_boxHeight(m_defaultHeight)
 	, m_boxDepth(m_defaultDepth)
@@ -243,8 +244,7 @@ QPointF Carton::vertex2d(Vertices vertex) const
 
 	// Project 3D point onto 2D plane
 	// from http://sfx.co.nz/tamahori/thought/shock_3d_howto.html#displaying
-	qreal d = 900.;
-	qreal scalar = 1. / ((z / d) + 1.);
+	qreal scalar = 1. / ((z / m_focalLength) + 1.);
 	x *= scalar;
 	y *= scalar;
 

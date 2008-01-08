@@ -28,6 +28,7 @@ CartonizerMainWindow::CartonizerMainWindow(QWidget *parent)
 	setupUi(this);
 	connect(m_xRotationSpinBox, SIGNAL(valueChanged(double)), this, SLOT(handleXRotationChanged(double)));
 	connect(m_yRotationSpinBox, SIGNAL(valueChanged(double)), this, SLOT(handleYRotationChanged(double)));
+	connect(m_focalLengthSpinbox, SIGNAL(valueChanged(double)), this, SLOT(handleFocalLengthChanged(double)));
 	connect(m_previewWidget, SIGNAL(needsPaint(QPaintDevice *)), this, SIGNAL(needsPreviewPaint(QPaintDevice *)));
 }
 
@@ -44,4 +45,9 @@ void CartonizerMainWindow::handleXRotationChanged(double rotation)
 void CartonizerMainWindow::handleYRotationChanged(double rotation)
 {
 	emit propertyChanged("yRotation", rotation);
+}
+
+void CartonizerMainWindow::handleFocalLengthChanged(double length)
+{
+	emit propertyChanged("focalLength", length);
 }

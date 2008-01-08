@@ -31,6 +31,7 @@ class Cartonizer : public Carton
 	Q_PROPERTY(qreal xRotation READ xRotation WRITE setXRotation)
 	Q_PROPERTY(qreal yRotation READ yRotation WRITE setYRotation)
 	Q_PROPERTY(qreal reflectionSize READ reflectionSize WRITE setReflectionSize)
+	Q_PROPERTY(qreal focalLength READ focalLength WRITE setFocalLength)
 
 public:
     Cartonizer(QObject *parent = 0);
@@ -39,11 +40,13 @@ public:
 	qreal xRotation() const;
 	qreal yRotation() const;
 	qreal reflectionSize() const;
+	qreal focalLength() const;
 
 public slots:
 	void setXRotation(qreal rotation);
 	void setYRotation(qreal rotation);
 	void setReflectionSize(qreal size);
+	void setFocalLength(qreal length);
 };
 
 #endif

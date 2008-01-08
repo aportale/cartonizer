@@ -62,6 +62,11 @@ qreal Cartonizer::reflectionSize() const
 	return m_reflectionSize;
 }
 
+qreal Cartonizer::focalLength() const
+{
+	return m_focalLength;
+}
+
 void Cartonizer::setXRotation(qreal rotation)
 {
 	m_xRotation = rotation;
@@ -75,4 +80,9 @@ void Cartonizer::setYRotation(qreal rotation)
 void Cartonizer::setReflectionSize(qreal size)
 {
 	m_reflectionSize = size;
+}
+
+void Cartonizer::setFocalLength(qreal length)
+{
+	m_focalLength = length;
 }

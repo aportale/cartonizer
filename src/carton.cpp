@@ -55,13 +55,24 @@ void Carton::paint(QPaintDevice *paintDevice)
 //	painter.setOpacity(0.5);
 //	paintVertices(&painter);
 
-	paintFace(&painter, Front);
-	paintFace(&painter, Left);
-//	paintFace(&painter, Right);
-	paintFace(&painter, Top);
-	paintFace(&painter, FrontReflection);
-	paintFace(&painter, LeftReflection);
-//	paintFace(&painter, RightReflection);
+	if (isFaceVisibleFromFront(Top))
+		paintFace(&painter, Top);
+	if (isFaceVisibleFromFront(Front)) {
+		paintFace(&painter, FrontReflection);
+		paintFace(&painter, Front);
+	}
+	if (isFaceVisibleFromFront(Back)) {
+		paintFace(&painter, BackReflection);
+		paintFace(&painter, Back);
+	}
+	if (isFaceVisibleFromFront(Left)) {
+		paintFace(&painter, LeftReflection);
+		paintFace(&painter, Left);
+	}
+	if (isFaceVisibleFromFront(Right)) {
+		paintFace(&painter, Right);
+		paintFace(&painter, RightReflection);
+	}
 
 	painter.restore();
 }
@@ -234,7 +245,6 @@ QPointF Carton::vertex2d(Vertices vertex) const
 	// from http://sfx.co.nz/tamahori/thought/shock_3d_howto.html#displaying
 	qreal d = 900.;
 	qreal scalar = 1. / ((z / d) + 1.);
-	qreal voodoo = 20. - qMax(qMin(38-24*scalar, 17.), 10.);
 	x *= scalar;
 	y *= scalar;
 
@@ -250,6 +260,22 @@ QPolygonF Carton::face2d(Faces face) const
 	foreach (const Vertices vertex, m_facesVerticesHash[face])
 		result << vertex2d(vertex);
 	return result;
+}
+
+bool Carton::isFaceVisibleFromFront(Faces face) const
+{
+	// 2D Polygon Backface Culling
+	const QPolygonF face2d(face2d(face));
+	qreal
+		x1 = face2d.at(0).x(),
+		y1 = face2d.at(0).y(),
+		x2 = face2d.at(1).x(),
+		y2 = face2d.at(1).y(),
+		x3 = face2d.at(2).x(),
+		y3 = face2d.at(2).y();
+
+	// code line from http://www.cgafaq.info/wiki/2D_Polygon_Backface_Culling
+	return (x1-x2)*(y3-y2)-(y1-y2)*(x3-x2) < 0;
 }
 
 QHash<Carton::Faces, QVector<Carton::Vertices> > Carton::facesVerticesHash()

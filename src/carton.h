@@ -77,6 +77,7 @@ public:
 	void rotatedVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const;
 	QPointF vertex2d(Vertices vertex) const;
 	QPolygonF face2d(Faces face) const;
+	bool isFaceVisibleFromFront(Faces face) const;
 
 	static QImage defaultImage(Faces face, QSize size);
 

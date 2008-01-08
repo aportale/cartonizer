@@ -37,9 +37,8 @@ void Cartonizer::paintFaceTexture(QPainter *painter, Faces face)
 	painter->setBrush(Qt::white);
 	painter->drawRect(faceRect.adjusted(3, 3, -4, -4));
 	QString faceCaption =
-		face==Front?"Front"
-		:face==Left?"Left"
-		:face==Right?"Right"
+		(face==Front||face==Back)?"Front"
+		:(face==Left||face==Right)?"Side"
 		:"Top";
 	QFont font;
 	font.setPixelSize(20);

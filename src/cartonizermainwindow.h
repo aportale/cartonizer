@@ -40,9 +40,10 @@ public slots:
 	void updatePreview();
 
 private slots:
-	void handleXRotationChanged(double rotation);
-	void handleYRotationChanged(double rotation);
-	void handleFocalLengthChanged(double length);
+	void on_xRotationSpinBox_valueChanged(double rotation);
+	void on_yRotationSpinBox_valueChanged(double rotation);
+	void on_observerHeightSpinBox_valueChanged(double height);
+	void on_focalLengthSpinbox_valueChanged(double length);
 };
 
 #endif

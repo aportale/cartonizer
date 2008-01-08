@@ -38,7 +38,7 @@ Carton::Carton(QObject *parent)
 	, m_yOffset(300)
 	, m_xRotation(0)
 	, m_yRotation(0)
-	, m_observerHeight(-200)
+	, m_observerHeight(0)
 	, m_focalLength(900)
 	, m_boxWidth(m_defaultWidth)
 	, m_boxHeight(m_defaultHeight)
@@ -219,6 +219,8 @@ void Carton::boxVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const
 		default:
 			z = m_boxDepth / 2;
 	}
+
+	y -= m_boxHeight * m_observerHeight / 100;
 }
 
 void Carton::rotatedVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const

@@ -57,6 +57,11 @@ qreal Cartonizer::yRotation() const
 	return m_yRotation;
 }
 
+qreal Cartonizer::observerHeight() const
+{
+	return m_observerHeight;
+}
+
 qreal Cartonizer::reflectionSize() const
 {
 	return m_reflectionSize;
@@ -77,6 +82,11 @@ void Cartonizer::setYRotation(qreal rotation)
 	m_yRotation = rotation;
 }
 
+void Cartonizer::setObserverHeight(qreal height)
+{
+	m_observerHeight = height;
+}
+
 void Cartonizer::setReflectionSize(qreal size)
 {
 	m_reflectionSize = size;
@@ -86,3 +96,4 @@ void Cartonizer::setFocalLength(qreal length)
 {
 	m_focalLength = length;
 }
+

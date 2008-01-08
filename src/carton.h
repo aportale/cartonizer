@@ -99,12 +99,12 @@ protected:
 	qreal m_yRotation;
 	qreal m_observerHeight;
 	qreal m_focalLength;
+	qreal m_specularityValue;
 
 	qreal m_boxWidth;
 	qreal m_boxHeight;
 	qreal m_boxDepth;
 
-	qreal m_reflectionSize;
 
 private:
 	static QHash<Carton::Faces, QVector<Carton::Vertices> > facesVerticesHash();

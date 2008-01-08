@@ -56,3 +56,8 @@ void CartonizerMainWindow::on_focalLengthSpinbox_valueChanged(double length)
 {
 	emit propertyChanged("focalLength", length);
 }
+
+void CartonizerMainWindow::on_specularityValueSpinBox_valueChanged(double value)
+{
+	emit propertyChanged("specularityValue", value);
+}

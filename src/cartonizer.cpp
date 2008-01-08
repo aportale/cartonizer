@@ -62,9 +62,9 @@ qreal Cartonizer::observerHeight() const
 	return m_observerHeight;
 }
 
-qreal Cartonizer::reflectionSize() const
+qreal Cartonizer::specularityValue() const
 {
-	return m_reflectionSize;
+	return m_specularityValue;
 }
 
 qreal Cartonizer::focalLength() const
@@ -87,9 +87,9 @@ void Cartonizer::setObserverHeight(qreal height)
 	m_observerHeight = height;
 }
 
-void Cartonizer::setReflectionSize(qreal size)
+void Cartonizer::setSpecularityValue(qreal value)
 {
-	m_reflectionSize = size;
+	m_specularityValue = value;
 }
 
 void Cartonizer::setFocalLength(qreal length)

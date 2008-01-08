@@ -44,6 +44,7 @@ private slots:
 	void on_yRotationSpinBox_valueChanged(double rotation);
 	void on_observerHeightSpinBox_valueChanged(double height);
 	void on_focalLengthSpinbox_valueChanged(double length);
+	void on_specularityValueSpinBox_valueChanged(double value);
 };
 
 #endif

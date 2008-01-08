@@ -43,7 +43,7 @@ Carton::Carton(QObject *parent)
 	, m_boxWidth(m_defaultWidth)
 	, m_boxHeight(m_defaultHeight)
 	, m_boxDepth(m_defaultDepth)
-	, m_reflectionSize(0.4)
+	, m_specularityValue(40)
 {
 }
 
@@ -112,7 +112,7 @@ void Carton::paintFaceReflectionTexture(QPainter *painter, Faces face)
 
 	QImage alphaImage(faceSize.toSize(), QImage::Format_ARGB32);
 	QPainter alphaPainter(&alphaImage);
-	QLinearGradient alphaGradient(0, faceSize.height() * (1 - m_reflectionSize), 0, faceSize.height());
+	QLinearGradient alphaGradient(0, faceSize.height() * (1 - m_specularityValue/100), 0, faceSize.height());
 	alphaGradient.setColorAt(0, Qt::black);
 	alphaGradient.setColorAt(1, Qt::lightGray);
 	alphaPainter.setPen(Qt::NoPen);

@@ -39,6 +39,14 @@ void CartonizerMainWindow::updatePreview()
 	m_previewWidget->update();
 }
 
+void CartonizerMainWindow::updatePropery(const char *name, const QVariant &value)
+{
+	if (strcmp(name, "xRotation"))
+		updateSpinboxValue(xRotationSpinBox, value.toDouble());
+	else if (strcmp(name, "yRotation"))
+		updateSpinboxValue(yRotationSpinBox, value.toDouble());
+}
+
 void CartonizerMainWindow::on_xRotationSpinBox_valueChanged(double rotation)
 {
 	emit propertyChanged("xRotation", rotation);
@@ -62,4 +70,11 @@ void CartonizerMainWindow::on_focalLengthSpinbox_valueChanged(double length)
 void CartonizerMainWindow::on_specularityValueSpinBox_valueChanged(double value)
 {
 	emit propertyChanged("specularityValue", value);
+}
+
+void CartonizerMainWindow::updateSpinboxValue(QDoubleSpinBox *spinBox, double value)
+{
+	bool signalsOriginallyBlocked = spinBox->blockSignals(true);
+	spinBox->setValue(value);
+	spinBox->blockSignals(signalsOriginallyBlocked);
 }

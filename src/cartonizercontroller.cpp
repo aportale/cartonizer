@@ -46,5 +46,4 @@ void CartonizerController::setModelAndView(QObject *model, QWidget *view)
 void CartonizerController::handleViewPropertyChanged(const char *name, const QVariant &value)
 {
 	UndoStack::instance()->push(new PropertyCommand(m_model, name, value));
-	emit cartonChanged();
 }

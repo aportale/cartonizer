@@ -38,6 +38,7 @@ signals:
 
 public slots:
 	void updatePreview();
+	void updatePropery(const char *name, const QVariant &value);
 
 private slots:
 	void on_xRotationSpinBox_valueChanged(double rotation);
@@ -45,6 +46,9 @@ private slots:
 	void on_observerHeightSpinBox_valueChanged(double height);
 	void on_focalLengthSpinbox_valueChanged(double length);
 	void on_specularityValueSpinBox_valueChanged(double value);
+
+private:
+	void updateSpinboxValue(QDoubleSpinBox *spinBox, double value);
 };
 
 #endif

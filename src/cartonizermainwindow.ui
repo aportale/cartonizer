@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>350</width>
-    <height>429</height>
+    <width>751</width>
+    <height>708</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -16,15 +16,7 @@
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>350</width>
-     <height>429</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout" >
+   <layout class="QHBoxLayout" >
     <item>
      <widget class="CartonizerPreviewWidget" native="1" name="m_previewWidget" >
       <property name="sizePolicy" >
@@ -43,8 +35,17 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <layout class="QVBoxLayout" name="_3" >
-       <property name="margin" >
+      <layout class="QVBoxLayout" >
+       <property name="leftMargin" >
+        <number>0</number>
+       </property>
+       <property name="topMargin" >
+        <number>0</number>
+       </property>
+       <property name="rightMargin" >
+        <number>0</number>
+       </property>
+       <property name="bottomMargin" >
         <number>0</number>
        </property>
        <item>
@@ -58,7 +59,7 @@
          <property name="title" >
           <string>Placement</string>
          </property>
-         <layout class="QFormLayout" >
+         <layout class="QGridLayout" >
           <item row="0" column="0" >
            <widget class="QLabel" name="label" >
             <property name="text" >
@@ -174,7 +175,7 @@
          <property name="title" >
           <string>Options</string>
          </property>
-         <layout class="QFormLayout" name="_2" >
+         <layout class="QGridLayout" >
           <item row="0" column="0" >
            <widget class="QLabel" name="label_4" >
             <property name="text" >
@@ -209,14 +210,14 @@
         </widget>
        </item>
        <item>
-        <spacer name="verticalSpacer" >
+        <spacer>
          <property name="orientation" >
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" stdset="0" >
+         <property name="sizeHint" >
           <size>
            <width>20</width>
            <height>154</height>
@@ -240,10 +241,4 @@
  </customwidgets>
  <resources/>
  <connections/>
- <slots>
-  <slot>setXRotation(qreal)</slot>
-  <slot>setYRotation(qreal)</slot>
-  <signal>xRotationChanged(qreal)</signal>
-  <signal>yRotationChanged(qreal)</signal>
- </slots>
 </ui>

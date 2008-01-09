@@ -27,10 +27,10 @@
 
 class CartonizerPreviewWidget : public QWidget
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    CartonizerPreviewWidget(QWidget *parent = 0);
+	CartonizerPreviewWidget(QWidget *parent = 0);
 	void paintEvent(QPaintEvent *event);
 
 signals:

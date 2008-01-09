@@ -21,6 +21,8 @@
 */
 
 #include "cartonizercontroller.h"
+#include "undostack.h"
+#include "cartonizercommands.h"
 #include <QWidget>
 #include <QVariant>
 
@@ -29,6 +31,7 @@ CartonizerController::CartonizerController(QObject *parent)
 	, m_model(NULL)
 	, m_view(NULL)
 {
+	connect(UndoStack::instance(), SIGNAL(indexChanged(int)), this, SIGNAL(cartonChanged()));
 }
 
 void CartonizerController::setModelAndView(QObject *model, QWidget *view)
@@ -42,6 +45,6 @@ void CartonizerController::setModelAndView(QObject *model, QWidget *view)
 
 void CartonizerController::handleViewPropertyChanged(const char *name, const QVariant &value)
 {
-	m_model->setProperty(name, value);
+	UndoStack::instance()->push(new PropertyCommand(m_model, name, value));
 	emit cartonChanged();
 }

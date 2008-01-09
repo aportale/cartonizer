@@ -27,7 +27,7 @@
 
 class Cartonizer : public Carton
 {
-    Q_OBJECT
+	Q_OBJECT
 	Q_PROPERTY(qreal xRotation READ xRotation WRITE setXRotation)
 	Q_PROPERTY(qreal yRotation READ yRotation WRITE setYRotation)
 	Q_PROPERTY(qreal observerHeight READ observerHeight WRITE setObserverHeight)

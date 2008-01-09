@@ -23,6 +23,7 @@
 #include "cartonizercommands.h"
 
 CartonizerCommand::CartonizerCommand(QObject *cartonizer)
+	: m_cartonizer(cartonizer)
 {
 }
 
@@ -48,3 +49,13 @@ int PropertyCommand::id() const
 {
 	return 10000 + m_cartonizer->metaObject()->indexOfProperty(m_propertyName);
 }
+
+bool PropertyCommand::mergeWith(const QUndoCommand *command)
+{
+	const PropertyCommand *otherCommand = static_cast<const PropertyCommand*>(command);
+	setText(otherCommand->text());
+	m_propertyName = otherCommand->m_propertyName;
+	m_value = otherCommand->m_value;
+	return true;
+}
+

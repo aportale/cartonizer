@@ -33,7 +33,7 @@ const QHash<Carton::Faces, QVector<Carton::Vertices> > Carton::m_facesVerticesHa
 const qreal Carton::PI = 3.14159265358979323846; // Source: http://en.wikipedia.org/wiki/Pi
 
 Carton::Carton(QObject *parent)
-    : QObject(parent)
+	: QObject(parent)
 	, m_xOffset(300)
 	, m_yOffset(300)
 	, m_xRotation(0)

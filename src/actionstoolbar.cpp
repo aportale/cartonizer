@@ -20,14 +20,18 @@
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
-#include "cartonizerpreviewwidget.h"
+#include "actionstoolbar.h"
+#include "undostack.h"
+#include <QIcon>
+#include <QAction>
 
-CartonizerPreviewWidget::CartonizerPreviewWidget(QWidget *parent)
-	: QWidget(parent)
+ActionsToolbar::ActionsToolbar(QWidget *parent)
+	: QToolBar(parent)
 {
-}
-
-void CartonizerPreviewWidget::paintEvent(QPaintEvent *event)
-{
-	emit needsPaint(this);
+	m_undoAction = UndoStack::instance()->createUndoAction(this);
+	m_undoAction->setIcon(QIcon(":/icons/undo.png"));
+	addAction(m_undoAction);
+	m_redoAction = UndoStack::instance()->createRedoAction(this);
+	m_redoAction->setIcon(QIcon(":/icons/redo.png"));
+	addAction(m_redoAction);
 }

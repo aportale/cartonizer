@@ -20,14 +20,21 @@
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
-#include "cartonizerpreviewwidget.h"
+#ifndef ACTIONSTOOLBAR_H
+#define ACTIONSTOOLBAR_H
 
-CartonizerPreviewWidget::CartonizerPreviewWidget(QWidget *parent)
-	: QWidget(parent)
-{
-}
+#include <QToolBar>
 
-void CartonizerPreviewWidget::paintEvent(QPaintEvent *event)
+class ActionsToolbar : public QToolBar
 {
-	emit needsPaint(this);
-}
+	Q_OBJECT
+
+public:
+	ActionsToolbar(QWidget *parent = 0);
+
+private:
+	QAction *m_undoAction;
+	QAction *m_redoAction;
+};
+
+#endif

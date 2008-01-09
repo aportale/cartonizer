@@ -44,6 +44,7 @@ public:
 	void undo();
 	void redo();
 	int id() const;
+	bool mergeWith(const QUndoCommand *command);
 
 private:
 	const char *m_propertyName;

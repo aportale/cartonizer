@@ -19,9 +19,9 @@
    <property name="geometry" >
     <rect>
      <x>0</x>
-     <y>12</y>
+     <y>0</y>
      <width>350</width>
-     <height>417</height>
+     <height>429</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout" >
@@ -228,25 +228,6 @@
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QToolBar" name="toolBar" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>350</width>
-     <height>12</height>
-    </rect>
-   </property>
-   <property name="windowTitle" >
-    <string>toolBar</string>
-   </property>
-   <attribute name="toolBarArea" >
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak" >
-    <bool>false</bool>
-   </attribute>
   </widget>
  </widget>
  <customwidgets>

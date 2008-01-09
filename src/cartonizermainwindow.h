@@ -27,10 +27,10 @@
 
 class CartonizerMainWindow : public QMainWindow, public Ui::CartonizerMainWindow
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    CartonizerMainWindow(QWidget *parent = 0);
+	CartonizerMainWindow(QWidget *parent = 0);
 
 signals:
 	void propertyChanged(const char *name, const QVariant &value);

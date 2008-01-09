@@ -20,14 +20,17 @@
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 */
 
-#include "cartonizerpreviewwidget.h"
+#include "undostack.h"
+#include <QApplication>
+#include <QWidget>
 
-CartonizerPreviewWidget::CartonizerPreviewWidget(QWidget *parent)
-	: QWidget(parent)
+UndoStack::UndoStack(QObject *parent)
+	: QUndoStack(parent)
 {
 }
 
-void CartonizerPreviewWidget::paintEvent(QPaintEvent *event)
+UndoStack *UndoStack::instance()
 {
-	emit needsPaint(this);
+	static UndoStack *undoStack = new UndoStack(QApplication::activeWindow());
+	return undoStack;
 }

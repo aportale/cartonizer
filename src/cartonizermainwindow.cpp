@@ -21,11 +21,13 @@
 */
 
 #include "cartonizermainwindow.h"
+#include "actionstoolbar.h"
 
 CartonizerMainWindow::CartonizerMainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
 	setupUi(this);
+	addToolBar(new ActionsToolbar);
 //	connect(m_xRotationSpinBox, SIGNAL(valueChanged(double)), this, SLOT(on_xRotationSpinBox_valueChanged(double)));
 //	connect(m_yRotationSpinBox, SIGNAL(valueChanged(double)), this, SLOT(on_yRotationSpinBox_valueChanged(double)));
 //	connect(m_focalLengthSpinbox, SIGNAL(valueChanged(double)), this, SLOT(on_focalLengthSpinbox_valueChanged(double)));

@@ -41,10 +41,16 @@ void CartonizerMainWindow::updatePreview()
 
 void CartonizerMainWindow::updatePropery(const char *name, const QVariant &value)
 {
-	if (strcmp(name, "xRotation"))
+	if (strcmp(name, "xRotation") == 0)
 		updateSpinboxValue(xRotationSpinBox, value.toDouble());
-	else if (strcmp(name, "yRotation"))
+	else if (strcmp(name, "yRotation") == 0)
 		updateSpinboxValue(yRotationSpinBox, value.toDouble());
+	else if (strcmp(name, "observerHeight") == 0)
+		updateSpinboxValue(observerHeightSpinBox, value.toDouble());
+	else if (strcmp(name, "focalLength") == 0)
+		updateSpinboxValue(focalLengthSpinbox, value.toDouble());
+	else if (strcmp(name, "specularityValue") == 0)
+		updateSpinboxValue(specularityValueSpinBox, value.toDouble());
 }
 
 void CartonizerMainWindow::on_xRotationSpinBox_valueChanged(double rotation)
@@ -77,4 +83,6 @@ void CartonizerMainWindow::updateSpinboxValue(QDoubleSpinBox *spinBox, double va
 	bool signalsOriginallyBlocked = spinBox->blockSignals(true);
 	spinBox->setValue(value);
 	spinBox->blockSignals(signalsOriginallyBlocked);
+	spinBox->selectAll();
+	spinBox->setFocus();
 }

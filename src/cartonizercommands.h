@@ -39,12 +39,17 @@ protected:
 
 class PropertyCommand : public CartonizerCommand
 {
+	Q_OBJECT
+
 public:
 	PropertyCommand(QObject *cartonizer, const char *propertyName, const QVariant &propertyValue);
 	void undo();
 	void redo();
 	int id() const;
 	bool mergeWith(const QUndoCommand *command);
+
+signals:
+	bool propertyCanged(const char *propertyName, const QVariant &propertyValue);
 
 private:
 	const char *m_propertyName;

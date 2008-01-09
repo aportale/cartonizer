@@ -38,11 +38,13 @@ PropertyCommand::PropertyCommand(QObject *cartonizer, const char *propertyName, 
 void PropertyCommand::undo()
 {
 	m_cartonizer->setProperty(m_propertyName, m_oldValue);
+	emit propertyCanged(m_propertyName, m_oldValue);
 }
 
 void PropertyCommand::redo()
 {
 	m_cartonizer->setProperty(m_propertyName, m_value);
+	emit propertyCanged(m_propertyName, m_value);
 }
 
 int PropertyCommand::id() const

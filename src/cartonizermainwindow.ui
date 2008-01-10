@@ -140,7 +140,7 @@
            </widget>
           </item>
           <item row="3" column="1" >
-           <widget class="QDoubleSpinBox" name="focalLengthSpinbox" >
+           <widget class="QDoubleSpinBox" name="focalLengthSpinBox" >
             <property name="wrapping" >
              <bool>false</bool>
             </property>

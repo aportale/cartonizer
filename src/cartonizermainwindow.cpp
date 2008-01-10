@@ -35,6 +35,56 @@ CartonizerMainWindow::CartonizerMainWindow(QWidget *parent)
 	connect(m_previewWidget, SIGNAL(needsPaint(QPaintDevice *)), this, SIGNAL(needsPreviewPaint(QPaintDevice *)));
 }
 
+qreal CartonizerMainWindow::xRotation() const
+{
+	return xRotationSpinBox->value();
+}
+
+qreal CartonizerMainWindow::yRotation() const
+{
+	return yRotationSpinBox->value();
+}
+
+qreal CartonizerMainWindow::observerHeight() const
+{
+	return observerHeightSpinBox->value();
+}
+
+qreal CartonizerMainWindow::specularityValue() const
+{
+	return specularityValueSpinBox->value();
+}
+
+qreal CartonizerMainWindow::focalLength() const
+{
+	return focalLengthSpinBox->value();
+}
+
+void CartonizerMainWindow::setXRotation(qreal rotation)
+{
+	updateSpinBoxValue(xRotationSpinBox, rotation);
+}
+
+void CartonizerMainWindow::setYRotation(qreal rotation)
+{
+	updateSpinBoxValue(yRotationSpinBox, rotation);
+}
+
+void CartonizerMainWindow::setObserverHeight(qreal height)
+{
+	updateSpinBoxValue(observerHeightSpinBox, height);
+}
+
+void CartonizerMainWindow::setSpecularityValue(qreal value)
+{
+	updateSpinBoxValue(specularityValueSpinBox, value);
+}
+
+void CartonizerMainWindow::setFocalLength(qreal length)
+{
+	updateSpinBoxValue(focalLengthSpinBox, length);
+}
+
 void CartonizerMainWindow::updatePreview()
 {
 	m_previewWidget->update();
@@ -43,15 +93,15 @@ void CartonizerMainWindow::updatePreview()
 void CartonizerMainWindow::updatePropery(const char *name, const QVariant &value)
 {
 	if (strcmp(name, CartonizerProperties::xRotation) == 0)
-		updateSpinboxValue(xRotationSpinBox, value.toDouble());
+		updateSpinBoxValue(xRotationSpinBox, value.toDouble());
 	else if (strcmp(name, CartonizerProperties::yRotation) == 0)
-		updateSpinboxValue(yRotationSpinBox, value.toDouble());
+		updateSpinBoxValue(yRotationSpinBox, value.toDouble());
 	else if (strcmp(name, CartonizerProperties::observerHeight) == 0)
-		updateSpinboxValue(observerHeightSpinBox, value.toDouble());
+		updateSpinBoxValue(observerHeightSpinBox, value.toDouble());
 	else if (strcmp(name, CartonizerProperties::focalLength) == 0)
-		updateSpinboxValue(focalLengthSpinbox, value.toDouble());
+		updateSpinBoxValue(focalLengthSpinBox, value.toDouble());
 	else if (strcmp(name, CartonizerProperties::specularityValue) == 0)
-		updateSpinboxValue(specularityValueSpinBox, value.toDouble());
+		updateSpinBoxValue(specularityValueSpinBox, value.toDouble());
 }
 
 void CartonizerMainWindow::on_xRotationSpinBox_valueChanged(double rotation)
@@ -69,7 +119,7 @@ void CartonizerMainWindow::on_observerHeightSpinBox_valueChanged(double height)
 	emit propertyChanged(CartonizerProperties::observerHeight, height);
 }
 
-void CartonizerMainWindow::on_focalLengthSpinbox_valueChanged(double length)
+void CartonizerMainWindow::on_focalLengthSpinBox_valueChanged(double length)
 {
 	emit propertyChanged(CartonizerProperties::focalLength, length);
 }
@@ -79,11 +129,12 @@ void CartonizerMainWindow::on_specularityValueSpinBox_valueChanged(double value)
 	emit propertyChanged(CartonizerProperties::specularityValue, value);
 }
 
-void CartonizerMainWindow::updateSpinboxValue(QDoubleSpinBox *spinBox, double value)
+void CartonizerMainWindow::updateSpinBoxValue(QDoubleSpinBox *spinBox, double value)
 {
 	bool signalsOriginallyBlocked = spinBox->blockSignals(true);
 	spinBox->setValue(value);
 	spinBox->blockSignals(signalsOriginallyBlocked);
+	setFocus();
 	spinBox->selectAll();
 	spinBox->setFocus();
 }

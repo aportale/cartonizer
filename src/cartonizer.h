@@ -35,7 +35,7 @@ class Cartonizer : public Carton
 	Q_PROPERTY(qreal focalLength READ focalLength WRITE setFocalLength)
 
 public:
-    Cartonizer(QObject *parent = 0);
+	Cartonizer(QObject *parent = 0);
 
 	void paintFaceTexture(QPainter *painter, Faces face);
 	qreal xRotation() const;

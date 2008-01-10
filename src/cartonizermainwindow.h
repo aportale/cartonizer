@@ -28,15 +28,31 @@
 class CartonizerMainWindow : public QMainWindow, public Ui::CartonizerMainWindow
 {
 	Q_OBJECT
+	Q_PROPERTY(qreal xRotation READ xRotation WRITE setXRotation)
+	Q_PROPERTY(qreal yRotation READ yRotation WRITE setYRotation)
+	Q_PROPERTY(qreal observerHeight READ observerHeight WRITE setObserverHeight)
+	Q_PROPERTY(qreal specularityValue READ specularityValue WRITE setSpecularityValue)
+	Q_PROPERTY(qreal focalLength READ focalLength WRITE setFocalLength)
 
 public:
 	CartonizerMainWindow(QWidget *parent = 0);
+
+	qreal xRotation() const;
+	qreal yRotation() const;
+	qreal observerHeight() const;
+	qreal specularityValue() const;
+	qreal focalLength() const;
 
 signals:
 	void propertyChanged(const char *name, const QVariant &value);
 	void needsPreviewPaint(QPaintDevice *paintDevice);
 
 public slots:
+	void setXRotation(qreal rotation);
+	void setYRotation(qreal rotation);
+	void setObserverHeight(qreal height);
+	void setSpecularityValue(qreal value);
+	void setFocalLength(qreal length);
 	void updatePreview();
 	void updatePropery(const char *name, const QVariant &value);
 
@@ -44,11 +60,11 @@ private slots:
 	void on_xRotationSpinBox_valueChanged(double rotation);
 	void on_yRotationSpinBox_valueChanged(double rotation);
 	void on_observerHeightSpinBox_valueChanged(double height);
-	void on_focalLengthSpinbox_valueChanged(double length);
+	void on_focalLengthSpinBox_valueChanged(double length);
 	void on_specularityValueSpinBox_valueChanged(double value);
 
 private:
-	void updateSpinboxValue(QDoubleSpinBox *spinBox, double value);
+	void updateSpinBoxValue(QDoubleSpinBox *spinBox, double value);
 };
 
 #endif

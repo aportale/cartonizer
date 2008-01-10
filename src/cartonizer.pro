@@ -21,6 +21,7 @@
 HEADERS += \
 	carton.h \
 	cartonizer.h \
+	cartonizerproperties.h \
 	cartonizercontroller.h \
 	undostack.h \
 	cartonizercommands.h \
@@ -31,6 +32,7 @@ HEADERS += \
 SOURCES += \
 	carton.cpp \
 	cartonizer.cpp \
+	cartonizerproperties.cpp \
 	cartonizercontroller.cpp \
 	undostack.cpp \
 	cartonizercommands.cpp \
@@ -42,5 +44,5 @@ SOURCES += \
 FORMS += \
 	cartonizermainwindow.ui
 
-	RESOURCES += \
+RESOURCES += \
 	resources.qrc

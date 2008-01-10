@@ -22,6 +22,7 @@
 
 #include "cartonizermainwindow.h"
 #include "actionstoolbar.h"
+#include "cartonizerproperties.h"
 
 CartonizerMainWindow::CartonizerMainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -41,41 +42,41 @@ void CartonizerMainWindow::updatePreview()
 
 void CartonizerMainWindow::updatePropery(const char *name, const QVariant &value)
 {
-	if (strcmp(name, "xRotation") == 0)
+	if (strcmp(name, CartonizerProperties::xRotation) == 0)
 		updateSpinboxValue(xRotationSpinBox, value.toDouble());
-	else if (strcmp(name, "yRotation") == 0)
+	else if (strcmp(name, CartonizerProperties::yRotation) == 0)
 		updateSpinboxValue(yRotationSpinBox, value.toDouble());
-	else if (strcmp(name, "observerHeight") == 0)
+	else if (strcmp(name, CartonizerProperties::observerHeight) == 0)
 		updateSpinboxValue(observerHeightSpinBox, value.toDouble());
-	else if (strcmp(name, "focalLength") == 0)
+	else if (strcmp(name, CartonizerProperties::focalLength) == 0)
 		updateSpinboxValue(focalLengthSpinbox, value.toDouble());
-	else if (strcmp(name, "specularityValue") == 0)
+	else if (strcmp(name, CartonizerProperties::specularityValue) == 0)
 		updateSpinboxValue(specularityValueSpinBox, value.toDouble());
 }
 
 void CartonizerMainWindow::on_xRotationSpinBox_valueChanged(double rotation)
 {
-	emit propertyChanged("xRotation", rotation);
+	emit propertyChanged(CartonizerProperties::xRotation, rotation);
 }
 
 void CartonizerMainWindow::on_yRotationSpinBox_valueChanged(double rotation)
 {
-	emit propertyChanged("yRotation", rotation);
+	emit propertyChanged(CartonizerProperties::yRotation, rotation);
 }
 
 void CartonizerMainWindow::on_observerHeightSpinBox_valueChanged(double height)
 {
-	emit propertyChanged("observerHeight", height);
+	emit propertyChanged(CartonizerProperties::observerHeight, height);
 }
 
 void CartonizerMainWindow::on_focalLengthSpinbox_valueChanged(double length)
 {
-	emit propertyChanged("focalLength", length);
+	emit propertyChanged(CartonizerProperties::focalLength, length);
 }
 
 void CartonizerMainWindow::on_specularityValueSpinBox_valueChanged(double value)
 {
-	emit propertyChanged("specularityValue", value);
+	emit propertyChanged(CartonizerProperties::specularityValue, value);
 }
 
 void CartonizerMainWindow::updateSpinboxValue(QDoubleSpinBox *spinBox, double value)

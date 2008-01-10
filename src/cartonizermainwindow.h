@@ -33,6 +33,7 @@ class CartonizerMainWindow : public QMainWindow, public Ui::CartonizerMainWindow
 	Q_PROPERTY(qreal observerHeight READ observerHeight WRITE setObserverHeight)
 	Q_PROPERTY(qreal specularityValue READ specularityValue WRITE setSpecularityValue)
 	Q_PROPERTY(qreal focalLength READ focalLength WRITE setFocalLength)
+	Q_PROPERTY(bool selectAndFocus READ selectAndFocus WRITE setSelectAndFocus)
 
 public:
 	CartonizerMainWindow(QWidget *parent = 0);
@@ -42,6 +43,7 @@ public:
 	qreal observerHeight() const;
 	qreal specularityValue() const;
 	qreal focalLength() const;
+	bool selectAndFocus() const;
 
 signals:
 	void propertyChanged(const char *name, const QVariant &value);
@@ -53,6 +55,7 @@ public slots:
 	void setObserverHeight(qreal height);
 	void setSpecularityValue(qreal value);
 	void setFocalLength(qreal length);
+	void setSelectAndFocus(bool selectAndFocus);
 	void updatePreview();
 	void updatePropery(const char *name, const QVariant &value);
 
@@ -65,6 +68,7 @@ private slots:
 
 private:
 	void updateSpinBoxValue(QDoubleSpinBox *spinBox, double value);
+	bool m_selectAndFocus;
 };
 
 #endif

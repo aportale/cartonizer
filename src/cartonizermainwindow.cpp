@@ -26,12 +26,10 @@
 
 CartonizerMainWindow::CartonizerMainWindow(QWidget *parent)
     : QMainWindow(parent)
+    , m_selectAndFocus(true)
 {
 	setupUi(this);
 	addToolBar(new ActionsToolbar);
-//	connect(m_xRotationSpinBox, SIGNAL(valueChanged(double)), this, SLOT(on_xRotationSpinBox_valueChanged(double)));
-//	connect(m_yRotationSpinBox, SIGNAL(valueChanged(double)), this, SLOT(on_yRotationSpinBox_valueChanged(double)));
-//	connect(m_focalLengthSpinbox, SIGNAL(valueChanged(double)), this, SLOT(on_focalLengthSpinbox_valueChanged(double)));
 	connect(m_previewWidget, SIGNAL(needsPaint(QPaintDevice *)), this, SIGNAL(needsPreviewPaint(QPaintDevice *)));
 }
 
@@ -60,6 +58,11 @@ qreal CartonizerMainWindow::focalLength() const
 	return focalLengthSpinBox->value();
 }
 
+bool CartonizerMainWindow::selectAndFocus() const
+{
+	return m_selectAndFocus;
+}
+
 void CartonizerMainWindow::setXRotation(qreal rotation)
 {
 	updateSpinBoxValue(xRotationSpinBox, rotation);
@@ -83,6 +86,11 @@ void CartonizerMainWindow::setSpecularityValue(qreal value)
 void CartonizerMainWindow::setFocalLength(qreal length)
 {
 	updateSpinBoxValue(focalLengthSpinBox, length);
+}
+
+void CartonizerMainWindow::setSelectAndFocus(bool selectAndFocus)
+{
+	m_selectAndFocus = selectAndFocus;
 }
 
 void CartonizerMainWindow::updatePreview()
@@ -134,7 +142,8 @@ void CartonizerMainWindow::updateSpinBoxValue(QDoubleSpinBox *spinBox, double va
 	bool signalsOriginallyBlocked = spinBox->blockSignals(true);
 	spinBox->setValue(value);
 	spinBox->blockSignals(signalsOriginallyBlocked);
-	setFocus();
-	spinBox->selectAll();
-	spinBox->setFocus();
+	if (m_selectAndFocus) {
+		spinBox->selectAll();
+		spinBox->setFocus();
+	}
 }

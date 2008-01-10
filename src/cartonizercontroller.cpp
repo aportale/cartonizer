@@ -23,6 +23,7 @@
 #include "cartonizercontroller.h"
 #include "undostack.h"
 #include "cartonizercommands.h"
+#include "cartonizerproperties.h"
 #include <QWidget>
 #include <QMetaProperty>
 #include <QVariant>
@@ -42,10 +43,13 @@ void CartonizerController::setModelAndView(QObject *model, QWidget *view)
 	connect(view, SIGNAL(needsPreviewPaint(QPaintDevice *)), model, SLOT(paint(QPaintDevice *)));
 	connect(view, SIGNAL(propertyChanged(const char*, const QVariant&)), SLOT(handleViewPropertyChanged(const char*, const QVariant&)));
 	connect(this, SIGNAL(cartonChanged()), view, SLOT(updatePreview()));
+	bool viewSelectsAndFocusses = view->property(CartonizerProperties::selectAndFocus).toBool();
+	view->setProperty(CartonizerProperties::selectAndFocus, QVariant(false));
 	for (int i = 0; i < model->metaObject()->propertyCount(); i++) {
 		const char* propertyName = model->metaObject()->property(i).name();
 		view->setProperty(propertyName, view->setProperty(propertyName, model->property(propertyName)));
 	}
+	view->setProperty(CartonizerProperties::selectAndFocus, viewSelectsAndFocusses);
 }
 
 void CartonizerController::handleViewPropertyChanged(const char *name, const QVariant &value)

@@ -47,7 +47,8 @@ void CartonizerController::setModelAndView(QObject *model, QWidget *view)
 	view->setProperty(CartonizerProperties::selectAndFocus, QVariant(false));
 	for (int i = 0; i < model->metaObject()->propertyCount(); i++) {
 		const char* propertyName = model->metaObject()->property(i).name();
-		view->setProperty(propertyName, view->setProperty(propertyName, model->property(propertyName)));
+		if (!strcmp(propertyName, "objectName") == 0)
+			view->setProperty(propertyName, model->property(propertyName));
 	}
 	view->setProperty(CartonizerProperties::selectAndFocus, viewSelectsAndFocusses);
 }

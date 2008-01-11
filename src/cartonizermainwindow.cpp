@@ -100,16 +100,7 @@ void CartonizerMainWindow::updatePreview()
 
 void CartonizerMainWindow::updatePropery(const char *name, const QVariant &value)
 {
-	if (strcmp(name, CartonizerProperties::xRotation) == 0)
-		updateSpinBoxValue(xRotationSpinBox, value.toDouble());
-	else if (strcmp(name, CartonizerProperties::yRotation) == 0)
-		updateSpinBoxValue(yRotationSpinBox, value.toDouble());
-	else if (strcmp(name, CartonizerProperties::observerHeight) == 0)
-		updateSpinBoxValue(observerHeightSpinBox, value.toDouble());
-	else if (strcmp(name, CartonizerProperties::focalLength) == 0)
-		updateSpinBoxValue(focalLengthSpinBox, value.toDouble());
-	else if (strcmp(name, CartonizerProperties::specularityValue) == 0)
-		updateSpinBoxValue(specularityValueSpinBox, value.toDouble());
+	setProperty(name, value);
 }
 
 void CartonizerMainWindow::on_xRotationSpinBox_valueChanged(double rotation)

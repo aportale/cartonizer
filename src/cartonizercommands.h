@@ -31,10 +31,11 @@ class CartonizerCommand : public QObject, public QUndoCommand
 	Q_OBJECT
 
 public:
-	CartonizerCommand(QObject *cartonizer);
+	CartonizerCommand(QObject *model, QObject *view);
 
 protected:
-	QObject *m_cartonizer;
+	QObject *m_model;
+	QObject *m_view;
 };
 
 class PropertyCommand : public CartonizerCommand
@@ -42,14 +43,11 @@ class PropertyCommand : public CartonizerCommand
 	Q_OBJECT
 
 public:
-	PropertyCommand(QObject *cartonizer, const char *propertyName, const QVariant &propertyValue);
+	PropertyCommand(QObject *model, QObject *view, const char *propertyName, const QVariant &propertyValue);
 	void undo();
 	void redo();
 	int id() const;
 	bool mergeWith(const QUndoCommand *command);
-
-signals:
-	bool propertyCanged(const char *propertyName, const QVariant &propertyValue);
 
 private:
 	const char *m_propertyName;

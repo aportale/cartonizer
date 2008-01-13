@@ -34,7 +34,7 @@ class CartonizerController : public QObject
 public:
 	CartonizerController(QObject *parent = 0);
 
-	void setModelAndView(QObject *model, QWidget *view);
+	void setModelAndView(QObject *model, QObject *view);
 
 signals:
 	void cartonChanged();
@@ -44,7 +44,7 @@ private slots:
 
 private:
 	QObject *m_model;
-	QWidget *m_view;
+	QObject *m_view;
 };
 
 #endif

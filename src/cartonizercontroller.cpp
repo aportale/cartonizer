@@ -36,7 +36,7 @@ CartonizerController::CartonizerController(QObject *parent)
 	connect(UndoStack::instance(), SIGNAL(indexChanged(int)), this, SIGNAL(cartonChanged()));
 }
 
-void CartonizerController::setModelAndView(QObject *model, QWidget *view)
+void CartonizerController::setModelAndView(QObject *model, QObject *view)
 {
 	m_model = model;
 	m_view = view;
@@ -55,7 +55,6 @@ void CartonizerController::setModelAndView(QObject *model, QWidget *view)
 
 void CartonizerController::handleViewPropertyChanged(const char *name, const QVariant &value)
 {
-	PropertyCommand *command = new PropertyCommand(m_model, name, value);
-	connect(command, SIGNAL(propertyCanged(const char*, const QVariant&)), m_view, SLOT(updatePropery(const char*, const QVariant&)));
+	PropertyCommand *command = new PropertyCommand(m_model, m_view, name, value);
 	UndoStack::instance()->push(command);
 }

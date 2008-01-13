@@ -22,34 +22,35 @@
 
 #include "cartonizercommands.h"
 
-CartonizerCommand::CartonizerCommand(QObject *cartonizer)
-	: m_cartonizer(cartonizer)
+CartonizerCommand::CartonizerCommand(QObject *model, QObject *view)
+	: m_model(model)
+	, m_view(view)
 {
 }
 
-PropertyCommand::PropertyCommand(QObject *cartonizer, const char *propertyName, const QVariant &propertyValue)
-	: CartonizerCommand(cartonizer)
+PropertyCommand::PropertyCommand(QObject *model, QObject *view, const char *propertyName, const QVariant &propertyValue)
+	: CartonizerCommand(model, view)
 	, m_propertyName(propertyName)
 	, m_value(propertyValue)
-	, m_oldValue(cartonizer->property(propertyName))
+	, m_oldValue(model->property(propertyName))
 {
 }
 
 void PropertyCommand::undo()
 {
-	m_cartonizer->setProperty(m_propertyName, m_oldValue);
-	emit propertyCanged(m_propertyName, m_oldValue);
+	m_model->setProperty(m_propertyName, m_oldValue);
+	m_view->setProperty(m_propertyName, m_oldValue);
 }
 
 void PropertyCommand::redo()
 {
-	m_cartonizer->setProperty(m_propertyName, m_value);
-	emit propertyCanged(m_propertyName, m_value);
+	m_model->setProperty(m_propertyName, m_value);
+	m_view->setProperty(m_propertyName, m_value);
 }
 
 int PropertyCommand::id() const
 {
-	return 10000 + m_cartonizer->metaObject()->indexOfProperty(m_propertyName);
+	return 10000 + m_model->metaObject()->indexOfProperty(m_propertyName);
 }
 
 bool PropertyCommand::mergeWith(const QUndoCommand *command)

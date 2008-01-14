@@ -105,7 +105,6 @@ protected:
 	qreal m_boxHeight;
 	qreal m_boxDepth;
 
-
 private:
 	static QHash<Carton::Faces, QVector<Carton::Vertices> > facesVerticesHash();
 };

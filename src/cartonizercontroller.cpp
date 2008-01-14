@@ -27,6 +27,11 @@
 #include <QWidget>
 #include <QMetaProperty>
 #include <QVariant>
+#include <QFileInfo>
+#include <QPicture>
+#include <QPainter>
+
+Q_DECLARE_METATYPE(QPicture)
 
 CartonizerController::CartonizerController(QObject *parent)
 	: QObject(parent)
@@ -55,6 +60,28 @@ void CartonizerController::setModelAndView(QObject *model, QObject *view)
 
 void CartonizerController::handleViewPropertyChanged(const char *name, const QVariant &value)
 {
-	PropertyCommand *command = new PropertyCommand(m_model, m_view, name, value);
+	QVariant propertyValue = transformViewToModelProperty(name, value);
+	PropertyCommand *command = new PropertyCommand(m_model, m_view, name, propertyValue);
 	UndoStack::instance()->push(command);
+}
+
+QVariant CartonizerController::transformViewToModelProperty(const char *propertyName, const QVariant &viewValue) const
+{
+	QVariant result;
+	if (strcmp(propertyName, "frontFace") == 0) {
+		QString imageFileName = viewValue.toString();
+		QFileInfo imageFileInfo(imageFileName);
+		QString imageFileSuffix = imageFileInfo.suffix();
+		QPicture facePicture;
+		QPainter facePainter(&facePicture);
+		if (imageFileSuffix == QLatin1String("svg")) {
+			facePainter.drawEllipse(QPoint(100, 100), 30, 40);
+		} else {
+
+		}
+		result = qVariantFromValue(facePicture);
+	} else {
+		result = viewValue;
+	}
+	return result;
 }

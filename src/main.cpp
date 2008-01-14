@@ -71,6 +71,7 @@ int main(int argc, char *argv[])
 	CartonizerController controller;
 	CartonizerMainWindow w;
 	controller.setModelAndView(&cartonizer, &w);
+	controller.handleViewPropertyChanged("frontFace", QVariant("defaultfaces.svg"));
 	w.show();
 	return a.exec();
 }

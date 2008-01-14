@@ -28,8 +28,6 @@
 
 class CartonizerCommand : public QObject, public QUndoCommand
 {
-	Q_OBJECT
-
 public:
 	CartonizerCommand(QObject *model, QObject *view);
 
@@ -40,8 +38,6 @@ protected:
 
 class PropertyCommand : public CartonizerCommand
 {
-	Q_OBJECT
-
 public:
 	PropertyCommand(QObject *model, QObject *view, const char *propertyName, const QVariant &propertyValue);
 	void undo();

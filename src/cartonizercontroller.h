@@ -39,10 +39,12 @@ public:
 signals:
 	void cartonChanged();
 
-private slots:
+public slots:
 	void handleViewPropertyChanged(const char *name, const QVariant &value);
 
 private:
+	QVariant transformViewToModelProperty(const char *propertyName, const QVariant &viewValue) const;
+
 	QObject *m_model;
 	QObject *m_view;
 };

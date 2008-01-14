@@ -24,15 +24,21 @@
 #define CARTONIZER_H
 
 #include "carton.h"
+#include <QPicture>
 
 class Cartonizer : public Carton
 {
 	Q_OBJECT
-	Q_PROPERTY(qreal xRotation READ xRotation WRITE setXRotation)
-	Q_PROPERTY(qreal yRotation READ yRotation WRITE setYRotation)
-	Q_PROPERTY(qreal observerHeight READ observerHeight WRITE setObserverHeight)
+	Q_PROPERTY(qreal xRotation        READ xRotation        WRITE setXRotation)
+	Q_PROPERTY(qreal yRotation        READ yRotation        WRITE setYRotation)
+	Q_PROPERTY(qreal observerHeight   READ observerHeight   WRITE setObserverHeight)
 	Q_PROPERTY(qreal specularityValue READ specularityValue WRITE setSpecularityValue)
-	Q_PROPERTY(qreal focalLength READ focalLength WRITE setFocalLength)
+	Q_PROPERTY(qreal focalLength      READ focalLength      WRITE setFocalLength)
+	Q_PROPERTY(QPicture frontFace     READ frontFace        WRITE setFrontFace)
+	Q_PROPERTY(QPicture leftFace      READ leftFace         WRITE setLeftFace)
+	Q_PROPERTY(QPicture topFace       READ topFace          WRITE setTopFace)
+	Q_PROPERTY(QPicture rightFace     READ rightFace        WRITE setRightFace)
+	Q_PROPERTY(QPicture combinedFaces READ combinedFaces    WRITE setCombinedFaces)
 
 public:
 	Cartonizer(QObject *parent = 0);
@@ -43,6 +49,11 @@ public:
 	qreal observerHeight() const;
 	qreal specularityValue() const;
 	qreal focalLength() const;
+	QPicture frontFace() const;
+	QPicture leftFace() const;
+	QPicture topFace() const;
+	QPicture rightFace() const;
+	QPicture combinedFaces() const;
 
 public slots:
 	void setXRotation(qreal rotation);
@@ -50,6 +61,18 @@ public slots:
 	void setObserverHeight(qreal height);
 	void setSpecularityValue(qreal value);
 	void setFocalLength(qreal length);
+	void setFrontFace(const QPicture &face);
+	void setLeftFace(const QPicture &face);
+	void setTopFace(const QPicture &face);
+	void setRightFace(const QPicture &face);
+	void setCombinedFaces(const QPicture &faces);
+
+private:
+	QPicture m_frontFace;
+	QPicture m_leftFace;
+	QPicture m_topFace;
+	QPicture m_rightFace;
+	QPicture m_combinedFaces;
 };
 
 #endif

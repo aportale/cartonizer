@@ -44,6 +44,10 @@ void Cartonizer::paintFaceTexture(QPainter *painter, Faces face)
 	font.setPixelSize(20);
 	painter->setFont(font);
 	painter->drawText(faceRect, Qt::AlignCenter, faceCaption);
+
+	if (face==Front)
+		painter->drawPicture(0, 0, m_frontFace);
+
 	painter->restore();
 }
 
@@ -72,6 +76,31 @@ qreal Cartonizer::focalLength() const
 	return m_focalLength;
 }
 
+QPicture Cartonizer::frontFace() const
+{
+	return m_frontFace;
+}
+
+QPicture Cartonizer::leftFace() const
+{
+	return m_leftFace;
+}
+
+QPicture Cartonizer::topFace() const
+{
+	return m_topFace;
+}
+
+QPicture Cartonizer::rightFace() const
+{
+	return m_rightFace;
+}
+
+QPicture Cartonizer::combinedFaces() const
+{
+	return m_combinedFaces;
+}
+
 void Cartonizer::setXRotation(qreal rotation)
 {
 	m_xRotation = rotation;
@@ -97,3 +126,27 @@ void Cartonizer::setFocalLength(qreal length)
 	m_focalLength = length;
 }
 
+void Cartonizer::setFrontFace(const QPicture &face)
+{
+	m_frontFace = face;
+}
+
+void Cartonizer::setLeftFace(const QPicture &face)
+{
+	m_leftFace = face;
+}
+
+void Cartonizer::setTopFace(const QPicture &face)
+{
+	m_topFace = face;
+}
+
+void Cartonizer::setRightFace(const QPicture &face)
+{
+	m_rightFace = face;
+}
+
+void Cartonizer::setCombinedFaces(const QPicture &faces)
+{
+	m_combinedFaces = faces;
+}

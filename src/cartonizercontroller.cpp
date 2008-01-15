@@ -30,6 +30,7 @@
 #include <QFileInfo>
 #include <QPicture>
 #include <QPainter>
+#include <QSvgRenderer>
 
 Q_DECLARE_METATYPE(QPicture)
 
@@ -75,7 +76,8 @@ QVariant CartonizerController::transformViewToModelProperty(const char *property
 		QPicture facePicture;
 		QPainter facePainter(&facePicture);
 		if (imageFileSuffix == QLatin1String("svg")) {
-			facePainter.drawEllipse(QPoint(100, 100), 30, 40);
+			QSvgRenderer svgRenderer(imageFileName);
+			svgRenderer.render(&facePainter, svgRenderer.viewBox());
 		} else {
 
 		}

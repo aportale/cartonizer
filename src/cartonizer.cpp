@@ -129,6 +129,8 @@ void Cartonizer::setFocalLength(qreal length)
 void Cartonizer::setFrontFace(const QPicture &face)
 {
 	m_frontFace = face;
+	m_boxWidth = face.width();
+	m_boxHeight = face.height();
 }
 
 void Cartonizer::setLeftFace(const QPicture &face)

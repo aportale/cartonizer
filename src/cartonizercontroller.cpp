@@ -24,15 +24,10 @@
 #include "undostack.h"
 #include "cartonizercommands.h"
 #include "cartonizerproperties.h"
+#include "cartonizertools.h"
 #include <QWidget>
 #include <QMetaProperty>
 #include <QVariant>
-#include <QFileInfo>
-#include <QPicture>
-#include <QPainter>
-#include <QSvgRenderer>
-
-Q_DECLARE_METATYPE(QPicture)
 
 CartonizerController::CartonizerController(QObject *parent)
 	: QObject(parent)
@@ -71,17 +66,7 @@ QVariant CartonizerController::transformViewToModelProperty(const char *property
 	QVariant result;
 	if (strcmp(propertyName, "frontFace") == 0) {
 		QString imageFileName = viewValue.toString();
-		QFileInfo imageFileInfo(imageFileName);
-		QString imageFileSuffix = imageFileInfo.suffix();
-		QPicture facePicture;
-		QPainter facePainter(&facePicture);
-		if (imageFileSuffix == QLatin1String("svg")) {
-			QSvgRenderer svgRenderer(imageFileName);
-			svgRenderer.render(&facePainter, svgRenderer.viewBox());
-		} else {
-
-		}
-		result = qVariantFromValue(facePicture);
+		result = CartonizerTools::pictureVariantFromFile(imageFileName);
 	} else {
 		result = viewValue;
 	}

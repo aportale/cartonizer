@@ -26,6 +26,7 @@ HEADERS += \
 	cartonizer.h \
 	cartonizerproperties.h \
 	cartonizercontroller.h \
+	cartonizertools.h \
 	undostack.h \
 	cartonizercommands.h \
 	cartonizermainwindow.h \
@@ -37,6 +38,7 @@ SOURCES += \
 	cartonizer.cpp \
 	cartonizerproperties.cpp \
 	cartonizercontroller.cpp \
+	cartonizertools.cpp \
 	undostack.cpp \
 	cartonizercommands.cpp \
 	cartonizermainwindow.cpp \

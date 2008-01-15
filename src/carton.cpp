@@ -98,6 +98,9 @@ void Carton::paintFace(QPainter *painter, Faces face)
 
 void Carton::paintFaceReflectionTexture(QPainter *painter, Faces face)
 {
+	if (m_specularityValue <= 0)
+		return;
+
 	Faces emittingFace =
 		face == FrontReflection?Front
 		:face == BackReflection?Back
@@ -105,23 +108,28 @@ void Carton::paintFaceReflectionTexture(QPainter *painter, Faces face)
 		:/* face == RightReflection? */Right;
 
 	QSizeF faceSize(this->faceSize(face));
-	QImage blendImage(faceSize.toSize(), QImage::Format_ARGB32);
+	qreal faceWith = faceSize.width();
+	qreal faceHeight = faceSize.height();
+	qreal reflectionHeight = faceHeight/100 * m_specularityValue;
+	qreal remainingFaceHeight = faceHeight - reflectionHeight;
+	QImage blendImage(QSize(faceWith, reflectionHeight), QImage::Format_ARGB32);
 	QPainter blendPainter(&blendImage);
+	blendPainter.translate(0, -remainingFaceHeight);
 	paintFaceTexture(&blendPainter, emittingFace);
 	blendPainter.end();
 
-	QImage alphaImage(faceSize.toSize(), QImage::Format_ARGB32);
+	QImage alphaImage(QSize(faceWith, reflectionHeight), QImage::Format_ARGB32);
 	QPainter alphaPainter(&alphaImage);
-	QLinearGradient alphaGradient(0, faceSize.height() * (1 - m_specularityValue/100), 0, faceSize.height());
+	QLinearGradient alphaGradient(0, 0, 0, faceHeight);
 	alphaGradient.setColorAt(0, Qt::black);
 	alphaGradient.setColorAt(1, Qt::lightGray);
 	alphaPainter.setPen(Qt::NoPen);
-	alphaPainter.fillRect(QRectF(0, 0, faceSize.width(), faceSize.height()), alphaGradient);
+	alphaPainter.fillRect(QRectF(0, 0, faceWith, reflectionHeight), alphaGradient);
 	blendImage.setAlphaChannel(alphaImage);
 	alphaPainter.end();
 
 	painter->save();
-	painter->drawImage(0, 0, blendImage);
+	painter->drawImage(0, remainingFaceHeight, blendImage);
 	painter->restore();
 }
 

@@ -45,8 +45,12 @@ void Cartonizer::paintFaceTexture(QPainter *painter, Faces face)
 	painter->setFont(font);
 	painter->drawText(faceRect, Qt::AlignCenter, faceCaption);
 
-	if (face==Front)
-		painter->drawPicture(0, 0, m_frontFace);
+	painter->drawPicture(0, 0, 
+		face == Front?m_frontFace
+		:face == Left?m_leftFace
+		:face == Top?m_topFace
+		:/* face == Right? */m_topFace
+		);
 
 	painter->restore();
 }
@@ -136,6 +140,7 @@ void Cartonizer::setFrontFace(const QPicture &face)
 void Cartonizer::setLeftFace(const QPicture &face)
 {
 	m_leftFace = face;
+	m_boxDepth = face.width();
 }
 
 void Cartonizer::setTopFace(const QPicture &face)
@@ -146,6 +151,7 @@ void Cartonizer::setTopFace(const QPicture &face)
 void Cartonizer::setRightFace(const QPicture &face)
 {
 	m_rightFace = face;
+	m_boxDepth = face.width();
 }
 
 void Cartonizer::setCombinedFaces(const QPicture &faces)

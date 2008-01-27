@@ -64,7 +64,11 @@ void CartonizerController::handleViewPropertyChanged(const char *name, const QVa
 QVariant CartonizerController::transformViewToModelProperty(const char *propertyName, const QVariant &viewValue) const
 {
 	QVariant result;
-	if (strcmp(propertyName, "frontFace") == 0) {
+	if (strcmp(propertyName, "frontFace") == 0
+		|| strcmp(propertyName, "leftFace") == 0
+		|| strcmp(propertyName, "topFace") == 0
+		|| strcmp(propertyName, "rightFace") == 0
+		|| strcmp(propertyName, "combinedFaces") == 0) {
 		QString imageFileName = viewValue.toString();
 		result = CartonizerTools::pictureVariantFromFile(imageFileName);
 	} else {

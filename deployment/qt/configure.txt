@@ -1,1 +1,1 @@
-configure -no-qt3support -no-stl -no-exceptions -static -qconfig cartonizer
+configure -no-webkit -no-qt3support -no-stl -no-exceptions -static -qconfig cartonizer

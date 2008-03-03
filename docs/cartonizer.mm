@@ -23,6 +23,9 @@
 <arrowlink DESTINATION="ID_1897096243" ENDARROW="Default" ENDINCLINATION="105;0;" ID="Arrow_ID_1396006045" STARTARROW="None" STARTINCLINATION="105;0;"/>
 </node>
 </node>
+<node CREATED="1204511265312" ID="ID_1505906357" MODIFIED="1204511279906" TEXT="Visual box rotation">
+<node CREATED="1204511282500" ID="ID_1095569836" MODIFIED="1204511537375" TEXT="The view should allow to modify the &quot;camera position&quot; via drag an drop, by virtually rotating the box. Two modes (selectable with toolbuttons): 1) Rotation, horizontal dragging rotates, vertical dragging inclines 2) Height, vertical dragging modifies the height of the &quot;camera position&quot;."/>
+</node>
 </node>
 </node>
 </map>

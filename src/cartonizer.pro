@@ -51,3 +51,8 @@ FORMS += \
 
 RESOURCES += \
 	resources.qrc
+	
+macx:CONFIG += \
+	x86 ppc
+
+macx:QMAKE_MAC_SDK = /Developer/SDKs/MacOSX10.4u.sdk

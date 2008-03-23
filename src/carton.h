@@ -90,7 +90,7 @@ public:
 	static const qreal PI;
 
 public slots:
-	void paint(QPaintDevice *paintDevice);
+	void paint(QPaintDevice *paintDevice, bool hightQuality);
 
 protected:
 	qreal m_xOffset;

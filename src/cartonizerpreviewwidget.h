@@ -34,7 +34,7 @@ public:
 	void paintEvent(QPaintEvent *event);
 
 signals:
-	void needsPaint(QPaintDevice *paintDevice);
+	void needsPaint(QPaintDevice *paintDevice, bool highQuality);
 };
 
 #endif

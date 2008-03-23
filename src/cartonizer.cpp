@@ -24,35 +24,18 @@
 #include <QPainter>
 
 Cartonizer::Cartonizer(QObject *parent)
-: Carton(parent)
+	: Carton(parent)
 {
 }
 
 void Cartonizer::paintFaceTexture(QPainter *painter, Faces face)
 {
-	QRect faceRect(QPoint(0, 0), faceSize(face).toSize());
-	painter->save();
-	painter->setBrush(Qt::black);
-	painter->drawRect(faceRect);
-	painter->setBrush(Qt::white);
-	painter->drawRect(faceRect.adjusted(3, 3, -4, -4));
-	QString faceCaption =
-		(face==Front||face==Back)?"Front"
-		:(face==Left||face==Right)?"Side"
-		:"Top";
-	QFont font;
-	font.setPixelSize(20);
-	painter->setFont(font);
-	painter->drawText(faceRect, Qt::AlignCenter, faceCaption);
-
-	painter->drawPicture(0, 0, 
-		face == Front?m_frontFace
+	painter->drawPixmap(0, 0, 
+		face == Front || face == Back?m_frontFace
 		:face == Left?m_leftFace
 		:face == Top?m_topFace
-		:/* face == Right? */m_topFace
+		:/* face == Right? */m_rightFace
 		);
-
-	painter->restore();
 }
 
 qreal Cartonizer::xRotation() const
@@ -80,27 +63,27 @@ qreal Cartonizer::focalLength() const
 	return m_focalLength;
 }
 
-QPicture Cartonizer::frontFace() const
+QPixmap Cartonizer::frontFace() const
 {
 	return m_frontFace;
 }
 
-QPicture Cartonizer::leftFace() const
+QPixmap Cartonizer::leftFace() const
 {
 	return m_leftFace;
 }
 
-QPicture Cartonizer::topFace() const
+QPixmap Cartonizer::topFace() const
 {
 	return m_topFace;
 }
 
-QPicture Cartonizer::rightFace() const
+QPixmap Cartonizer::rightFace() const
 {
 	return m_rightFace;
 }
 
-QPicture Cartonizer::combinedFaces() const
+QPixmap Cartonizer::combinedFaces() const
 {
 	return m_combinedFaces;
 }
@@ -130,31 +113,31 @@ void Cartonizer::setFocalLength(qreal length)
 	m_focalLength = length;
 }
 
-void Cartonizer::setFrontFace(const QPicture &face)
+void Cartonizer::setFrontFace(const QPixmap &face)
 {
 	m_frontFace = face;
 	m_boxWidth = face.width();
 	m_boxHeight = face.height();
 }
 
-void Cartonizer::setLeftFace(const QPicture &face)
+void Cartonizer::setLeftFace(const QPixmap &face)
 {
 	m_leftFace = face;
 	m_boxDepth = face.width();
 }
 
-void Cartonizer::setTopFace(const QPicture &face)
+void Cartonizer::setTopFace(const QPixmap &face)
 {
 	m_topFace = face;
 }
 
-void Cartonizer::setRightFace(const QPicture &face)
+void Cartonizer::setRightFace(const QPixmap &face)
 {
 	m_rightFace = face;
 	m_boxDepth = face.width();
 }
 
-void Cartonizer::setCombinedFaces(const QPicture &faces)
+void Cartonizer::setCombinedFaces(const QPixmap &faces)
 {
 	m_combinedFaces = faces;
 }

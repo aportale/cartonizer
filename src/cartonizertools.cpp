@@ -21,30 +21,3 @@
 */
 
 #include "cartonizertools.h"
-#include <QSvgRenderer>
-#include <QFileInfo>
-#include <QPainter>
-
-Q_DECLARE_METATYPE(QPicture)
-
-QPicture CartonizerTools::pictureFromFile(const QString &fileName)
-{
-	QPicture result;
-
-	QFileInfo imageFileInfo(fileName);
-	QString imageFileSuffix = imageFileInfo.suffix();
-	QPainter facePainter(&result);
-	if (imageFileSuffix == QLatin1String("svg")) {
-		QSvgRenderer svgRenderer(fileName);
-		svgRenderer.render(&facePainter, svgRenderer.viewBox());
-	} else {
-
-	}
-
-	return result;
-}
-
-QVariant CartonizerTools::pictureVariantFromFile(const QString &fileName)
-{
-	return qVariantFromValue(pictureFromFile(fileName));
-}

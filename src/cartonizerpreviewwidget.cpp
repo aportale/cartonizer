@@ -29,5 +29,6 @@ CartonizerPreviewWidget::CartonizerPreviewWidget(QWidget *parent)
 
 void CartonizerPreviewWidget::paintEvent(QPaintEvent *event)
 {
-	emit needsPaint(this);
+	emit needsPaint(this, true);
 }
+

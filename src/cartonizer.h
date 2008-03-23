@@ -24,7 +24,7 @@
 #define CARTONIZER_H
 
 #include "carton.h"
-#include <QPicture>
+#include <QPixmap>
 
 class Cartonizer : public Carton
 {
@@ -34,11 +34,11 @@ class Cartonizer : public Carton
 	Q_PROPERTY(qreal observerHeight   READ observerHeight   WRITE setObserverHeight)
 	Q_PROPERTY(qreal specularityValue READ specularityValue WRITE setSpecularityValue)
 	Q_PROPERTY(qreal focalLength      READ focalLength      WRITE setFocalLength)
-	Q_PROPERTY(QPicture frontFace     READ frontFace        WRITE setFrontFace)
-	Q_PROPERTY(QPicture leftFace      READ leftFace         WRITE setLeftFace)
-	Q_PROPERTY(QPicture topFace       READ topFace          WRITE setTopFace)
-	Q_PROPERTY(QPicture rightFace     READ rightFace        WRITE setRightFace)
-	Q_PROPERTY(QPicture combinedFaces READ combinedFaces    WRITE setCombinedFaces)
+	Q_PROPERTY(QPixmap frontFace      READ frontFace        WRITE setFrontFace)
+	Q_PROPERTY(QPixmap leftFace       READ leftFace         WRITE setLeftFace)
+	Q_PROPERTY(QPixmap topFace        READ topFace          WRITE setTopFace)
+	Q_PROPERTY(QPixmap rightFace      READ rightFace        WRITE setRightFace)
+	Q_PROPERTY(QPixmap combinedFaces  READ combinedFaces    WRITE setCombinedFaces)
 
 public:
 	Cartonizer(QObject *parent = 0);
@@ -49,11 +49,11 @@ public:
 	qreal observerHeight() const;
 	qreal specularityValue() const;
 	qreal focalLength() const;
-	QPicture frontFace() const;
-	QPicture leftFace() const;
-	QPicture topFace() const;
-	QPicture rightFace() const;
-	QPicture combinedFaces() const;
+	QPixmap frontFace() const;
+	QPixmap leftFace() const;
+	QPixmap topFace() const;
+	QPixmap rightFace() const;
+	QPixmap combinedFaces() const;
 
 public slots:
 	void setXRotation(qreal rotation);
@@ -61,18 +61,18 @@ public slots:
 	void setObserverHeight(qreal height);
 	void setSpecularityValue(qreal value);
 	void setFocalLength(qreal length);
-	void setFrontFace(const QPicture &face);
-	void setLeftFace(const QPicture &face);
-	void setTopFace(const QPicture &face);
-	void setRightFace(const QPicture &face);
-	void setCombinedFaces(const QPicture &faces);
+	void setFrontFace(const QPixmap &face);
+	void setLeftFace(const QPixmap &face);
+	void setTopFace(const QPixmap &face);
+	void setRightFace(const QPixmap &face);
+	void setCombinedFaces(const QPixmap &faces);
 
 private:
-	QPicture m_frontFace;
-	QPicture m_leftFace;
-	QPicture m_topFace;
-	QPicture m_rightFace;
-	QPicture m_combinedFaces;
+	QPixmap m_frontFace;
+	QPixmap m_leftFace;
+	QPixmap m_topFace;
+	QPixmap m_rightFace;
+	QPixmap m_combinedFaces;
 };
 
 #endif

@@ -23,14 +23,8 @@
 #ifndef CARTONIZERTOOLS_H
 #define CARTONIZERTOOLS_H
 
-#include <QPicture>
-#include <QVariant>
-
 class CartonizerTools
 {
-public:
-	static QPicture pictureFromFile(const QString &fileName);
-	static QVariant pictureVariantFromFile(const QString &fileName);
 };
 
 #endif

@@ -47,12 +47,12 @@ Carton::Carton(QObject *parent)
 {
 }
 
-void Carton::paint(QPaintDevice *paintDevice)
+void Carton::paint(QPaintDevice *paintDevice, bool hightQuality)
 {
 	QPainter painter(paintDevice);
 	painter.save();
-	painter.setRenderHint(QPainter::Antialiasing, true);
-	painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
+	painter.setRenderHint(QPainter::Antialiasing, hightQuality);
+	painter.setRenderHint(QPainter::SmoothPixmapTransform, hightQuality);
 //	painter.setOpacity(0.5);
 //	paintVertices(&painter);
 

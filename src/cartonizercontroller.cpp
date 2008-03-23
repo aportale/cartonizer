@@ -41,7 +41,7 @@ void CartonizerController::setModelAndView(QObject *model, QObject *view)
 {
 	m_model = model;
 	m_view = view;
-	connect(view, SIGNAL(needsPreviewPaint(QPaintDevice *)), model, SLOT(paint(QPaintDevice *)));
+	connect(view, SIGNAL(needsPreviewPaint(QPaintDevice *, bool)), model, SLOT(paint(QPaintDevice *, bool)));
 	connect(view, SIGNAL(propertyChanged(const char*, const QVariant&)), SLOT(handleViewPropertyChanged(const char*, const QVariant&)));
 	connect(this, SIGNAL(cartonChanged()), view, SLOT(updatePreview()));
 	bool viewSelectsAndFocusses = view->property(CartonizerProperties::selectAndFocus).toBool();
@@ -70,7 +70,7 @@ QVariant CartonizerController::transformViewToModelProperty(const char *property
 		|| strcmp(propertyName, "rightFace") == 0
 		|| strcmp(propertyName, "combinedFaces") == 0) {
 		QString imageFileName = viewValue.toString();
-		result = CartonizerTools::pictureVariantFromFile(imageFileName);
+		result = QPixmap(imageFileName);
 	} else {
 		result = viewValue;
 	}

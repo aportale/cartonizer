@@ -25,8 +25,8 @@
 #include "cartonizercommands.h"
 #include "cartonizerproperties.h"
 #include "cartonizertools.h"
-#include <QWidget>
 #include <QMetaProperty>
+#include <QPixmap>
 #include <QVariant>
 
 CartonizerController::CartonizerController(QObject *parent)
@@ -44,7 +44,7 @@ void CartonizerController::setModelAndView(QObject *model, QObject *view)
 	connect(view, SIGNAL(needsPreviewPaint(QPaintDevice *, bool)), model, SLOT(paint(QPaintDevice *, bool)));
 	connect(view, SIGNAL(propertyChanged(const char*, const QVariant&)), SLOT(handleViewPropertyChanged(const char*, const QVariant&)));
 	connect(this, SIGNAL(cartonChanged()), view, SLOT(updatePreview()));
-	bool viewSelectsAndFocusses = view->property(CartonizerProperties::selectAndFocus).toBool();
+	const bool viewSelectsAndFocusses = view->property(CartonizerProperties::selectAndFocus).toBool();
 	view->setProperty(CartonizerProperties::selectAndFocus, QVariant(false));
 	for (int i = 0; i < model->metaObject()->propertyCount(); i++) {
 		const char* propertyName = model->metaObject()->property(i).name();
@@ -56,7 +56,7 @@ void CartonizerController::setModelAndView(QObject *model, QObject *view)
 
 void CartonizerController::handleViewPropertyChanged(const char *name, const QVariant &value)
 {
-	QVariant propertyValue = transformViewToModelProperty(name, value);
+	const QVariant propertyValue = transformViewToModelProperty(name, value);
 	PropertyCommand *command = new PropertyCommand(m_model, m_view, name, propertyValue);
 	UndoStack::instance()->push(command);
 }
@@ -69,7 +69,7 @@ QVariant CartonizerController::transformViewToModelProperty(const char *property
 		|| strcmp(propertyName, "topFace") == 0
 		|| strcmp(propertyName, "rightFace") == 0
 		|| strcmp(propertyName, "combinedFaces") == 0) {
-		QString imageFileName = viewValue.toString();
+		const QString &imageFileName = viewValue.toString();
 		result = QPixmap(imageFileName);
 	} else {
 		result = viewValue;

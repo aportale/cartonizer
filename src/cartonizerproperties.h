@@ -25,12 +25,12 @@
 
 class CartonizerProperties {
 public:
-	static const char *xRotation;
-	static const char *yRotation;
-	static const char *observerHeight;
-	static const char *focalLength;
-	static const char *specularityValue;
-	static const char *selectAndFocus;
+	static const char* const xRotation;
+	static const char* const yRotation;
+	static const char* const observerHeight;
+	static const char* const focalLength;
+	static const char* const specularityValue;
+	static const char* const selectAndFocus;
 };
 
 #endif

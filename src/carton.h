@@ -79,14 +79,12 @@ public:
 	QPolygonF face2d(Faces face) const;
 	bool isFaceVisibleFromFront(Faces face) const;
 
-	static QImage defaultImage(Faces face, QSize size);
-
-	static QVector<Vertices> verticesOfFace(Faces face);
+	static const QVector<Vertices> verticesOfFace(Faces face);
 
 	static const qreal m_defaultWidth;
 	static const qreal m_defaultHeight;
 	static const qreal m_defaultDepth;
-	static const QHash<Carton::Faces, QVector<Carton::Vertices> > m_facesVerticesHash;
+	static const QHash<Carton::Faces, QVector<Carton::Vertices> > &m_facesVerticesHash;
 	static const qreal PI;
 
 public slots:
@@ -106,7 +104,7 @@ protected:
 	qreal m_boxDepth;
 
 private:
-	static QHash<Carton::Faces, QVector<Carton::Vertices> > facesVerticesHash();
+	static const QHash<Carton::Faces, QVector<Carton::Vertices> > &facesVerticesHash();
 };
 
 #endif

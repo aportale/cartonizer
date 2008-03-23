@@ -22,9 +22,9 @@
 
 #include "cartonizerproperties.h"
 
-const char* CartonizerProperties::xRotation = "xRotation";
-const char* CartonizerProperties::yRotation = "yRotation";
-const char* CartonizerProperties::observerHeight = "observerHeight";
-const char* CartonizerProperties::focalLength = "focalLength";
-const char* CartonizerProperties::specularityValue = "specularityValue";
-const char* CartonizerProperties::selectAndFocus = "selectAndFocus";
+const char* const CartonizerProperties::xRotation = "xRotation";
+const char* const CartonizerProperties::yRotation = "yRotation";
+const char* const CartonizerProperties::observerHeight = "observerHeight";
+const char* const CartonizerProperties::focalLength = "focalLength";
+const char* const CartonizerProperties::specularityValue = "specularityValue";
+const char* const CartonizerProperties::selectAndFocus = "selectAndFocus";

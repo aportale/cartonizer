@@ -130,7 +130,7 @@ void CartonizerMainWindow::on_specularityValueSpinBox_valueChanged(double value)
 
 void CartonizerMainWindow::updateSpinBoxValue(QDoubleSpinBox *spinBox, double value)
 {
-	bool signalsOriginallyBlocked = spinBox->blockSignals(true);
+	const bool signalsOriginallyBlocked = spinBox->blockSignals(true);
 	spinBox->setValue(value);
 	spinBox->blockSignals(signalsOriginallyBlocked);
 	if (m_selectAndFocus) {

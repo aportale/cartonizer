@@ -29,7 +29,7 @@
 const qreal Carton::m_defaultWidth = 140.;
 const qreal Carton::m_defaultHeight = 200.;
 const qreal Carton::m_defaultDepth = 60.;
-const QHash<Carton::Faces, QVector<Carton::Vertices> > Carton::m_facesVerticesHash = facesVerticesHash();
+const QHash<Carton::Faces, QVector<Carton::Vertices> > &Carton::m_facesVerticesHash = facesVerticesHash();
 const qreal Carton::PI = 3.14159265358979323846; // Source: http://en.wikipedia.org/wiki/Pi
 
 Carton::Carton(QObject *parent)
@@ -81,7 +81,7 @@ void Carton::paint(QPaintDevice *paintDevice, bool hightQuality)
 void Carton::paintFace(QPainter *painter, Faces face)
 {
 	painter->save();
-	QTransform faceTransform(transform(face) * QTransform().translate(m_xOffset, m_yOffset));
+	const QTransform faceTransform(transform(face) * QTransform().translate(m_xOffset, m_yOffset));
 	painter->setTransform(faceTransform);
 	switch (face) {
 		case FrontReflection:
@@ -101,17 +101,17 @@ void Carton::paintFaceReflectionTexture(QPainter *painter, Faces face)
 	if (m_specularityValue <= 0)
 		return;
 
-	Faces emittingFace =
+	const Faces emittingFace =
 		face == FrontReflection?Front
 		:face == BackReflection?Back
 		:face == LeftReflection?Left
 		:/* face == RightReflection? */Right;
 
-	QSizeF faceSize(this->faceSize(face));
-	qreal faceWith = faceSize.width();
-	qreal faceHeight = faceSize.height();
-	qreal reflectionHeight = faceHeight/100 * m_specularityValue;
-	qreal remainingFaceHeight = faceHeight - reflectionHeight;
+	const QSizeF faceSize(this->faceSize(face));
+	const qreal faceWith = faceSize.width();
+	const qreal faceHeight = faceSize.height();
+	const qreal reflectionHeight = faceHeight/100 * m_specularityValue;
+	const qreal remainingFaceHeight = faceHeight - reflectionHeight;
 	QImage blendImage(QSize(faceWith, reflectionHeight), QImage::Format_ARGB32);
 	QPainter blendPainter(&blendImage);
 	blendPainter.translate(0, -remainingFaceHeight);
@@ -167,14 +167,14 @@ QTransform Carton::transform(Faces face) const
 {
 	QTransform result;
 
-	QSizeF originalSize(faceSize(face));
+	const QSizeF originalSize(faceSize(face));
 	QPolygonF original(4);
 	original[0] = QPointF(0,                    0);                     // TopLeft
 	original[1] = QPointF(originalSize.width(), 0);                     // TopRight
 	original[2] = QPointF(originalSize.width(), originalSize.height()), // BottomRight
 	original[3] = QPointF(0,                    originalSize.height()); // BottomLeft
 
-	bool possible = QTransform::quadToQuad(original, face2d(face), result);
+	const bool possible = QTransform::quadToQuad(original, face2d(face), result);
 	Q_ASSERT(possible);
 
 	return result;
@@ -235,15 +235,15 @@ void Carton::rotatedVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) cons
 {
 	boxVertex3d(vertex, x, y, z);
 
-	qreal xRotation = (m_xRotation - 180) * PI / 180.;
-	qreal yRotation = m_yRotation * PI / 180.;
+	const qreal xRotation = (m_xRotation - 180) * PI / 180.;
+	const qreal yRotation = m_yRotation * PI / 180.;
 
 	// Rotate vertices
 	// from http://sfx.co.nz/tamahori/thought/shock_3d_howto.html#transforming
-	qreal temp_z = z * cos(yRotation) - x      * sin(yRotation);
-	x =            z * sin(yRotation) + x      * cos(yRotation);
-	z =            y * sin(xRotation) + temp_z * cos(xRotation);
-	y =            y * cos(xRotation) - temp_z * sin(xRotation);
+	const qreal temp_z = z * cos(yRotation) - x      * sin(yRotation);
+	x =                  z * sin(yRotation) + x      * cos(yRotation);
+	z =                  y * sin(xRotation) + temp_z * cos(xRotation);
+	y =                  y * cos(xRotation) - temp_z * sin(xRotation);
 }
 
 QPointF Carton::vertex2d(Vertices vertex) const
@@ -254,7 +254,7 @@ QPointF Carton::vertex2d(Vertices vertex) const
 
 	// Project 3D point onto 2D plane
 	// from http://sfx.co.nz/tamahori/thought/shock_3d_howto.html#displaying
-	qreal scalar = 1. / ((z / m_focalLength) + 1.);
+	const qreal scalar = 1. / ((z / m_focalLength) + 1.);
 	x *= scalar;
 	y *= scalar;
 
@@ -267,8 +267,8 @@ QPointF Carton::vertex2d(Vertices vertex) const
 QPolygonF Carton::face2d(Faces face) const
 {
 	QPolygonF result;
-	foreach (const Vertices vertex, m_facesVerticesHash[face])
-		result << vertex2d(vertex);
+	foreach (const Vertices &vertex, m_facesVerticesHash.value(face))
+		result.append(vertex2d(vertex));
 	return result;
 }
 
@@ -276,7 +276,7 @@ bool Carton::isFaceVisibleFromFront(Faces face) const
 {
 	// 2D Polygon Backface Culling
 	const QPolygonF vertices2d(face2d(face));
-	qreal
+	const qreal
 		x1 = vertices2d.at(0).x(),
 		y1 = vertices2d.at(0).y(),
 		x2 = vertices2d.at(1).x(),
@@ -288,11 +288,11 @@ bool Carton::isFaceVisibleFromFront(Faces face) const
 	return (x1-x2)*(y3-y2)-(y1-y2)*(x3-x2) < 0;
 }
 
-QHash<Carton::Faces, QVector<Carton::Vertices> > Carton::facesVerticesHash()
+const QHash<Carton::Faces, QVector<Carton::Vertices> > &Carton::facesVerticesHash()
 {
 	static const struct {
-		Faces face;
-		Vertices vertices[4]; //topLeft, topRight, bottomRight, BottomLeft
+		const Faces face;
+		const Vertices vertices[4]; //topLeft, topRight, bottomRight, BottomLeft
 	} verticesOfFaces[] = {
 		{Front,           {LeftTopFront, RightTopFront, RightBottomFront, LeftBottomFront}},
 		{Left,            {LeftTopBack, LeftTopFront, LeftBottomFront, LeftBottomBack}},
@@ -321,8 +321,8 @@ QHash<Carton::Faces, QVector<Carton::Vertices> > Carton::facesVerticesHash()
 	return result;
 }
 
-QVector<Carton::Vertices> Carton::verticesOfFace(Faces face)
+const QVector<Carton::Vertices> Carton::verticesOfFace(Faces face)
 {
 	Q_ASSERT(m_facesVerticesHash.contains(face));
-	return m_facesVerticesHash[face];
+	return m_facesVerticesHash.value(face);
 }

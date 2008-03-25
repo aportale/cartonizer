@@ -27,7 +27,7 @@
 #include <QImage>
 #include <QHash>
 
-class QPainter;
+QT_FORWARD_DECLARE_CLASS(QPainter)
 
 class Carton : public QObject
 {

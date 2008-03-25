@@ -25,8 +25,6 @@
 
 #include <QObject>
 
-class QPaintDevice;
-
 class CartonizerController : public QObject
 {
 	Q_OBJECT

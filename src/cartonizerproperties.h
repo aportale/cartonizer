@@ -23,7 +23,8 @@
 #ifndef CARTONIZERPROPERTIES_H
 #define CARTONIZERPROPERTIES_H
 
-class CartonizerProperties {
+class CartonizerProperties
+{
 public:
 	static const char* const xRotation;
 	static const char* const yRotation;

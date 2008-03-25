@@ -47,30 +47,26 @@ Carton::Carton(QObject *parent)
 {
 }
 
-void Carton::paint(QPaintDevice *paintDevice, bool hightQuality)
+void Carton::paint(QPaintDevice *paintDevice, bool highQuality)
 {
 	QPainter painter(paintDevice);
 	painter.save();
-	painter.setRenderHint(QPainter::Antialiasing, hightQuality);
-	painter.setRenderHint(QPainter::SmoothPixmapTransform, hightQuality);
-//	painter.setOpacity(0.5);
-//	paintVertices(&painter);
+	painter.setRenderHint(QPainter::Antialiasing, highQuality);
+	painter.setRenderHint(QPainter::SmoothPixmapTransform, highQuality);
 
 	if (isFaceVisibleFromFront(Top))
 		paintFace(&painter, Top);
 	if (isFaceVisibleFromFront(Front)) {
 		paintFace(&painter, FrontReflection);
 		paintFace(&painter, Front);
-	}
-	if (isFaceVisibleFromFront(Back)) {
+	} else if (isFaceVisibleFromFront(Back)) {
 		paintFace(&painter, BackReflection);
 		paintFace(&painter, Back);
 	}
 	if (isFaceVisibleFromFront(Left)) {
 		paintFace(&painter, LeftReflection);
 		paintFace(&painter, Left);
-	}
-	if (isFaceVisibleFromFront(Right)) {
+	} else if (isFaceVisibleFromFront(Right)) {
 		paintFace(&painter, Right);
 		paintFace(&painter, RightReflection);
 	}
@@ -286,6 +282,37 @@ bool Carton::isFaceVisibleFromFront(Faces face) const
 
 	// code line from http://www.cgafaq.info/wiki/2D_Polygon_Backface_Culling
 	return (x1-x2)*(y3-y2)-(y1-y2)*(x3-x2) < 0;
+}
+
+QPolygonF Carton::outline() const
+{
+	QPainterPath painterPath;
+
+	if (isFaceVisibleFromFront(Top))
+		painterPath.addPolygon(face2d(Top));
+	if (isFaceVisibleFromFront(Left))
+		painterPath.addPolygon(face2d(Left));
+	else if (isFaceVisibleFromFront(Right))
+		painterPath.addPolygon(face2d(Right));
+	if (isFaceVisibleFromFront(Front))
+		painterPath.addPolygon(face2d(Front));
+	else if (isFaceVisibleFromFront(Back))
+		painterPath.addPolygon(face2d(Back));
+
+	return painterPath.simplified().toFillPolygon();
+}
+
+QRectF Carton::boundingRect() const
+{
+	QPolygonF vertices(8);
+	static const Vertices boundingVertices[] =	{
+		LeftTopBack, RightTopBack, RightTopFront, LeftTopFront, 
+		LeftBottomBack, RightBottomBack, RightBottomFront, LeftBottomFront
+	};
+	const int boundingVerticesCount = sizeof(boundingVertices)/sizeof(boundingVertices[0]);
+	for (int i = 0; i < boundingVerticesCount; i++)
+		vertices.append(vertex2d(boundingVertices[i]));
+	return vertices.boundingRect();
 }
 
 const QHash<Carton::Faces, QVector<Carton::Vertices> > &Carton::facesVerticesHash()

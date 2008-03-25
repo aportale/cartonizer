@@ -78,6 +78,8 @@ public:
 	QPointF vertex2d(Vertices vertex) const;
 	QPolygonF face2d(Faces face) const;
 	bool isFaceVisibleFromFront(Faces face) const;
+	QPolygonF outline() const;
+	QRectF boundingRect() const;
 
 	static const QVector<Vertices> verticesOfFace(Faces face);
 
@@ -88,7 +90,7 @@ public:
 	static const qreal PI;
 
 public slots:
-	void paint(QPaintDevice *paintDevice, bool hightQuality);
+	void paint(QPaintDevice *paintDevice, bool highQuality);
 
 protected:
 	qreal m_xOffset;

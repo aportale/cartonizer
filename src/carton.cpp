@@ -47,12 +47,15 @@ Carton::Carton(QObject *parent)
 {
 }
 
-void Carton::paint(QPaintDevice *paintDevice, bool highQuality)
+void Carton::paint(QPaintDevice *paintDevice, const QRectF &rect, bool highQuality)
 {
 	QPainter painter(paintDevice);
 	painter.save();
 	painter.setRenderHint(QPainter::Antialiasing, highQuality);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform, highQuality);
+
+	const QRectF boundingRect(boundingRect());
+	const qreal scaleFactor = qMin(rect.width() / boundingRect.width(), rect.height() / boundingRect.height());
 
 	if (isFaceVisibleFromFront(Top))
 		paintFace(&painter, Top);

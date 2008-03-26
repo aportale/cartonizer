@@ -30,7 +30,7 @@ CartonizerMainWindow::CartonizerMainWindow(QWidget *parent)
 {
 	setupUi(this);
 	addToolBar(new ActionsToolbar);
-	connect(m_previewWidget, SIGNAL(needsPaint(QPaintDevice *, bool)), this, SIGNAL(needsPreviewPaint(QPaintDevice *, bool)));
+	connect(m_previewWidget, SIGNAL(needsPaint(QPaintDevice *, const QRectF&, bool)), this, SIGNAL(needsPreviewPaint(QPaintDevice *, const QRectF&, bool)));
 }
 
 qreal CartonizerMainWindow::xRotation() const

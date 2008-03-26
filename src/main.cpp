@@ -32,7 +32,7 @@ void savePng(Cartonizer *cartonizer)
 {
 	QImage pngImage(800, 800, QImage::Format_ARGB32);
 	pngImage.fill(qRgba(255, 255, 255, 0));
-	cartonizer->paint(&pngImage, true);
+	cartonizer->paint(&pngImage, QRectF(0, 0, 800, 800), true);
 	pngImage.save("carton.png");
 }
 

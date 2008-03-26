@@ -47,7 +47,7 @@ public:
 
 signals:
 	void propertyChanged(const char *name, const QVariant &value);
-	void needsPreviewPaint(QPaintDevice *paintDevice, bool highQuality);
+	void needsPreviewPaint(QPaintDevice *paintDevice, const QRectF &rect, bool highQuality);
 
 public slots:
 	void setXRotation(qreal rotation);

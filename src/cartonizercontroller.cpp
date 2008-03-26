@@ -41,7 +41,7 @@ void CartonizerController::setModelAndView(QObject *model, QObject *view)
 {
 	m_model = model;
 	m_view = view;
-	connect(view, SIGNAL(needsPreviewPaint(QPaintDevice *, bool)), model, SLOT(paint(QPaintDevice *, bool)));
+	connect(view, SIGNAL(needsPreviewPaint(QPaintDevice *, const QRectF &, bool)), model, SLOT(paint(QPaintDevice *, const QRectF &, bool)));
 	connect(view, SIGNAL(propertyChanged(const char*, const QVariant&)), SLOT(handleViewPropertyChanged(const char*, const QVariant&)));
 	connect(this, SIGNAL(cartonChanged()), view, SLOT(updatePreview()));
 	const bool viewSelectsAndFocusses = view->property(CartonizerProperties::selectAndFocus).toBool();

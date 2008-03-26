@@ -54,7 +54,7 @@ void Carton::paint(QPaintDevice *paintDevice, const QRectF &rect, bool highQuali
 	painter.setRenderHint(QPainter::Antialiasing, highQuality);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform, highQuality);
 
-	const QRectF boundingRect(boundingRect());
+	const QRectF boundingRect(this->boundingRect());
 	const qreal scaleFactor = qMin(rect.width() / boundingRect.width(), rect.height() / boundingRect.height());
 
 	if (isFaceVisibleFromFront(Top))

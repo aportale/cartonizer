@@ -1,5 +1,8 @@
 all:
 configure -no-webkit -no-xmlpatterns -no-qt3support -no-stl -no-exceptions -static -qconfig cartonizer
 
+macx/unix:
+-nomake demos -nomake examples
+
 macx:
 -universal -sdk /Developer/SDKs/MacOSX10.4u.sdk

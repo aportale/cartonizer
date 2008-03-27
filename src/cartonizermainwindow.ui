@@ -16,6 +16,14 @@
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>751</width>
+     <height>708</height>
+    </rect>
+   </property>
    <layout class="QHBoxLayout" >
     <item>
      <widget class="CartonizerPreviewWidget" native="1" name="m_previewWidget" >
@@ -36,16 +44,7 @@
        </sizepolicy>
       </property>
       <layout class="QVBoxLayout" >
-       <property name="leftMargin" >
-        <number>0</number>
-       </property>
-       <property name="topMargin" >
-        <number>0</number>
-       </property>
-       <property name="rightMargin" >
-        <number>0</number>
-       </property>
-       <property name="bottomMargin" >
+       <property name="margin" >
         <number>0</number>
        </property>
        <item>
@@ -128,7 +127,7 @@
              <number>1</number>
             </property>
             <property name="maximum" >
-             <double>150.000000000000000</double>
+             <double>100.000000000000000</double>
             </property>
            </widget>
           </item>
@@ -217,7 +216,7 @@
          <property name="sizeType" >
           <enum>QSizePolicy::Expanding</enum>
          </property>
-         <property name="sizeHint" >
+         <property name="sizeHint" stdset="0" >
           <size>
            <width>20</width>
            <height>154</height>

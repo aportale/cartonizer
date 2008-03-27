@@ -23,7 +23,6 @@
 #include "carton.h"
 #include <QPainter>
 #include <QtDebug>
-#include <QMetaEnum>
 #include <math.h>
 
 const qreal Carton::m_defaultWidth = 140.;
@@ -34,8 +33,6 @@ const qreal Carton::PI = 3.14159265358979323846; // Source: http://en.wikipedia.
 
 Carton::Carton(QObject *parent)
 	: QObject(parent)
-	, m_xOffset(300)
-	, m_yOffset(300)
 	, m_xRotation(0)
 	, m_yRotation(0)
 	, m_observerHeight(0)
@@ -55,32 +52,35 @@ void Carton::paint(QPaintDevice *paintDevice, const QRectF &rect, bool highQuali
 	painter.setRenderHint(QPainter::SmoothPixmapTransform, highQuality);
 
 	const QRectF boundingRect(this->boundingRect());
-	const qreal scaleFactor = qMin(rect.width() / boundingRect.width(), rect.height() / boundingRect.height());
+	const qreal scaling = qMin(rect.width() / boundingRect.width(), rect.height() / boundingRect.height());
+	const QRectF scaledBoundingRect(boundingRect.left() * scaling, boundingRect.top() * scaling,
+		boundingRect.width() * scaling, boundingRect.height() * scaling);
+	const QPointF translation(rect.center() - scaledBoundingRect.center());
 
 	if (isFaceVisibleFromFront(Top))
-		paintFace(&painter, Top);
+		paintFace(&painter, Top, translation, scaling);
 	if (isFaceVisibleFromFront(Front)) {
-		paintFace(&painter, FrontReflection);
-		paintFace(&painter, Front);
+		paintFace(&painter, FrontReflection, translation, scaling);
+		paintFace(&painter, Front, translation, scaling);
 	} else if (isFaceVisibleFromFront(Back)) {
-		paintFace(&painter, BackReflection);
-		paintFace(&painter, Back);
+		paintFace(&painter, BackReflection, translation, scaling);
+		paintFace(&painter, Back, translation, scaling);
 	}
 	if (isFaceVisibleFromFront(Left)) {
-		paintFace(&painter, LeftReflection);
-		paintFace(&painter, Left);
+		paintFace(&painter, LeftReflection, translation, scaling);
+		paintFace(&painter, Left, translation, scaling);
 	} else if (isFaceVisibleFromFront(Right)) {
-		paintFace(&painter, Right);
-		paintFace(&painter, RightReflection);
+		paintFace(&painter, Right, translation, scaling);
+		paintFace(&painter, RightReflection, translation, scaling);
 	}
 
 	painter.restore();
 }
 
-void Carton::paintFace(QPainter *painter, Faces face)
+void Carton::paintFace(QPainter *painter, Faces face, const QPointF &translation, qreal scaling)
 {
 	painter->save();
-	const QTransform faceTransform(transform(face) * QTransform().translate(m_xOffset, m_yOffset));
+	const QTransform faceTransform(transform(face, translation, scaling));
 	painter->setTransform(faceTransform);
 	switch (face) {
 		case FrontReflection:
@@ -162,7 +162,7 @@ QSizeF Carton::faceSize(Faces face) const
 	return QSizeF(width, height);
 }
 
-QTransform Carton::transform(Faces face) const
+QTransform Carton::transform(Faces face, const QPointF &translation, qreal scaling) const
 {
 	QTransform result;
 
@@ -173,7 +173,14 @@ QTransform Carton::transform(Faces face) const
 	original[2] = QPointF(originalSize.width(), originalSize.height()), // BottomRight
 	original[3] = QPointF(0,                    originalSize.height()); // BottomLeft
 
-	const bool possible = QTransform::quadToQuad(original, face2d(face), result);
+	QPolygonF targetFace = face2d(face);
+	QPolygonF::iterator i;
+	for (i = targetFace.begin(); i != targetFace.end(); ++i) {
+		(*i).setX((*i).x() * scaling + translation.x());
+		(*i).setY((*i).y() * scaling + translation.y());
+	}
+
+	const bool possible = QTransform::quadToQuad(original, targetFace, result);
 	Q_ASSERT(possible);
 
 	return result;

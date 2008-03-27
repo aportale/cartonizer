@@ -35,7 +35,7 @@ void Cartonizer::paintFaceTexture(QPainter *painter, Faces face)
 		:face == Left?m_leftFace
 		:face == Top?m_topFace
 		:/* face == Right? */m_rightFace;
-	painter->drawPixmap(0, 0, facePixmap);
+	painter->drawPixmap(QPointF(), facePixmap, QRectF(QPointF(), faceSize(face)));
 }
 
 qreal Cartonizer::xRotation() const

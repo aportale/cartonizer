@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
 	controller.setModelAndView(&cartonizer, &w);
 	controller.handleViewPropertyChanged("frontFace", ":/faces/front.png");
 	controller.handleViewPropertyChanged("leftFace", ":/faces/left.png");
+	controller.handleViewPropertyChanged("rightFace", ":/faces/left.png");
 	controller.handleViewPropertyChanged("topFace", ":/faces/top.png");
 	UndoStack::instance()->clear();
 	w.show();

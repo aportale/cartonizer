@@ -67,12 +67,12 @@ public:
 	};
 
 	Carton(QObject *parent = 0);
-	void paintFace(QPainter *painter, Faces face);
+	void paintFace(QPainter *painter, Faces face, const QPointF &translation, qreal scaling);
 	virtual void paintFaceTexture(QPainter *painter, Faces face) = 0;
 	void paintFaceReflectionTexture(QPainter *painter, Faces face);
 
 	QSizeF faceSize(Faces face) const;
-	QTransform transform(Faces face) const;
+	QTransform transform(Faces face, const QPointF &translation, qreal scaling) const;
 	void boxVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const;
 	void rotatedVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const;
 	QPointF vertex2d(Vertices vertex) const;
@@ -93,8 +93,6 @@ public slots:
 	void paint(QPaintDevice *paintDevice, const QRectF &rect, bool highQuality);
 
 protected:
-	qreal m_xOffset;
-	qreal m_yOffset;
 	qreal m_xRotation;
 	qreal m_yRotation;
 	qreal m_observerHeight;

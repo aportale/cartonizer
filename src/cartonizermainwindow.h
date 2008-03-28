@@ -48,6 +48,7 @@ public:
 signals:
 	void propertyChanged(const char *name, const QVariant &value);
 	void needsPreviewPaint(QPaintDevice *paintDevice, const QRectF &rect, bool highQuality);
+	void saveImage(const QString &fileName, const QSize &size);
 
 public slots:
 	void setXRotation(qreal rotation);
@@ -65,6 +66,7 @@ private slots:
 	void on_observerHeightSpinBox_valueChanged(double height);
 	void on_focalLengthSpinBox_valueChanged(double length);
 	void on_specularityValueSpinBox_valueChanged(double value);
+	void do_save();
 
 private:
 	void updateSpinBoxValue(QDoubleSpinBox *spinBox, double value);

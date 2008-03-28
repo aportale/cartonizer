@@ -24,12 +24,16 @@
 #include "actionstoolbar.h"
 #include "cartonizerproperties.h"
 
+#include <QFileDialog>
+
 CartonizerMainWindow::CartonizerMainWindow(QWidget *parent)
     : QMainWindow(parent)
     , m_selectAndFocus(true)
 {
 	setupUi(this);
-	addToolBar(new ActionsToolbar);
+	ActionsToolbar *toolBar = new ActionsToolbar(this);
+	addToolBar(toolBar);
+	connect(toolBar, SIGNAL(save()), SLOT(do_save()));
 	connect(m_previewWidget, SIGNAL(needsPaint(QPaintDevice *, const QRectF&, bool)), this, SIGNAL(needsPreviewPaint(QPaintDevice *, const QRectF&, bool)));
 }
 
@@ -126,6 +130,15 @@ void CartonizerMainWindow::on_focalLengthSpinBox_valueChanged(double length)
 void CartonizerMainWindow::on_specularityValueSpinBox_valueChanged(double value)
 {
 	emit propertyChanged(CartonizerProperties::specularityValue, value);
+}
+
+void CartonizerMainWindow::do_save()
+{
+	const QString fileName = 
+		QFileDialog::getSaveFileName(
+			this, tr("Save File"), "untitled.png", tr("Images (*.png *.xpm *.jpg)"));
+	if (!fileName.isEmpty())
+		emit saveImage(fileName, rect().size());
 }
 
 void CartonizerMainWindow::updateSpinBoxValue(QDoubleSpinBox *spinBox, double value)

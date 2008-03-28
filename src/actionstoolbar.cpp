@@ -34,4 +34,8 @@ ActionsToolbar::ActionsToolbar(QWidget *parent)
 	m_redoAction = UndoStack::instance()->createRedoAction(this);
 	m_redoAction->setIcon(QIcon(":/icons/redo.png"));
 	addAction(m_redoAction);
+	m_saveAction = new QAction(this);
+	m_saveAction->setIcon(QIcon(":/icons/save.png"));
+	connect(m_saveAction, SIGNAL(triggered()), this, SIGNAL(save()));
+	addAction(m_saveAction);
 }

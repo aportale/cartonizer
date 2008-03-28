@@ -25,8 +25,10 @@
 #include "cartonizercommands.h"
 #include "cartonizerproperties.h"
 #include "cartonizertools.h"
+#include "cartonizer.h"
 #include <QMetaProperty>
 #include <QPixmap>
+#include <QPainter>
 #include <QVariant>
 
 CartonizerController::CartonizerController(QObject *parent)
@@ -37,12 +39,13 @@ CartonizerController::CartonizerController(QObject *parent)
 	connect(UndoStack::instance(), SIGNAL(indexChanged(int)), this, SIGNAL(cartonChanged()));
 }
 
-void CartonizerController::setModelAndView(QObject *model, QObject *view)
+void CartonizerController::setModelAndView(Cartonizer *model, QObject *view)
 {
 	m_model = model;
 	m_view = view;
 	connect(view, SIGNAL(needsPreviewPaint(QPaintDevice *, const QRectF &, bool)), model, SLOT(paint(QPaintDevice *, const QRectF &, bool)));
 	connect(view, SIGNAL(propertyChanged(const char*, const QVariant&)), SLOT(handleViewPropertyChanged(const char*, const QVariant&)));
+	connect(view, SIGNAL(saveImage(const QString &, const QSize &)), SLOT(handleSaveImage(const QString &, const QSize &)));
 	connect(this, SIGNAL(cartonChanged()), view, SLOT(updatePreview()));
 	const bool viewSelectsAndFocusses = view->property(CartonizerProperties::selectAndFocus).toBool();
 	view->setProperty(CartonizerProperties::selectAndFocus, QVariant(false));
@@ -59,6 +62,14 @@ void CartonizerController::handleViewPropertyChanged(const char *name, const QVa
 	const QVariant propertyValue = transformViewToModelProperty(name, value);
 	PropertyCommand *command = new PropertyCommand(m_model, m_view, name, propertyValue);
 	UndoStack::instance()->push(command);
+}
+
+void CartonizerController::handleSaveImage(const QString &fileName, const QSize &size)
+{
+	QImage image(size, QImage::Format_ARGB32);
+	image.fill(Qt::transparent);
+	m_model->paint(&image, image.rect(), true);
+	const bool success = image.save(fileName);
 }
 
 QVariant CartonizerController::transformViewToModelProperty(const char *propertyName, const QVariant &viewValue) const

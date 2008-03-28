@@ -23,6 +23,7 @@
 	<qresource prefix="/icons" >
 		<file>redo.png</file>
 		<file>undo.png</file>
+		<file>save.png</file>
 	</qresource>
 	<qresource prefix="/faces" >
 		<file>front.png</file>

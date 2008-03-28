@@ -32,9 +32,13 @@ class ActionsToolbar : public QToolBar
 public:
 	ActionsToolbar(QWidget *parent = 0);
 
+signals:
+	void save();
+
 private:
 	QAction *m_undoAction;
 	QAction *m_redoAction;
+	QAction *m_saveAction;
 };
 
 #endif

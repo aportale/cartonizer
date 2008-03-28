@@ -35,6 +35,9 @@ public:
 
 signals:
 	void needsPaint(QPaintDevice *paintDevice, const QRectF &rect, bool highQuality);
+
+private:
+	QBrush m_background;
 };
 
 #endif

@@ -22,13 +22,19 @@
 
 #include "cartonizerpreviewwidget.h"
 
+#include <QPainter>
+
 CartonizerPreviewWidget::CartonizerPreviewWidget(QWidget *parent)
 	: QWidget(parent)
+	, m_background(Qt::black)
 {
 }
 
 void CartonizerPreviewWidget::paintEvent(QPaintEvent *event)
 {
+	QPainter p(this);
+	p.fillRect(rect(), m_background);
+	p.end();
 	emit needsPaint(this, rect(), true);
 }
 

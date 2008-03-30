@@ -96,7 +96,7 @@ void CartonizerMainWindow::setSelectAndFocus(bool selectAndFocus)
 
 void CartonizerMainWindow::updatePreview()
 {
-	m_previewWidget->update();
+	m_previewWidget->updatePreview();
 }
 
 void CartonizerMainWindow::updatePropery(const char *name, const QVariant &value)

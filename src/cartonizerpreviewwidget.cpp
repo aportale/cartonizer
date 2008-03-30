@@ -23,10 +23,13 @@
 #include "cartonizerpreviewwidget.h"
 
 #include <QPainter>
+#include <QtDebug>
 
 CartonizerPreviewWidget::CartonizerPreviewWidget(QWidget *parent)
 	: QWidget(parent)
 	, m_background(Qt::black)
+	, m_cartonChangeIsPainted(false)
+	, m_antiAliasTimerID(0)
 {
 }
 
@@ -36,6 +39,26 @@ void CartonizerPreviewWidget::paintEvent(QPaintEvent *event)
 	QPainter p(this);
 	p.fillRect(rect(), m_background);
 	p.end();
-	emit needsPaint(this, rect(), CartonizerEnums::Antialiased);
+	emit needsPaint(this, rect(), m_cartonChangeIsPainted ? CartonizerEnums::Aliased : CartonizerEnums::Antialiased);
+	if (!m_cartonChangeIsPainted)
+		qDebug() << "CartonizerEnums::Antialiased";
+	if (m_cartonChangeIsPainted) {
+		m_cartonChangeIsPainted = false;
+		killTimer(m_antiAliasTimerID);
+		m_antiAliasTimerID = startTimer(80);
+	}
 }
 
+void CartonizerPreviewWidget::timerEvent(QTimerEvent *event)
+{
+	Q_UNUSED(event)
+	m_cartonChangeIsPainted = false;
+	update();
+	killTimer(m_antiAliasTimerID);
+}
+
+void CartonizerPreviewWidget::updatePreview()
+{
+	m_cartonChangeIsPainted = true;
+	update();
+}

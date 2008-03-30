@@ -33,12 +33,18 @@ class CartonizerPreviewWidget : public QWidget
 public:
 	CartonizerPreviewWidget(QWidget *parent = 0);
 	void paintEvent(QPaintEvent *event);
+	void timerEvent(QTimerEvent *event);
+
+public slots:
+	void updatePreview();
 
 signals:
 	void needsPaint(QPaintDevice *paintDevice, const QRectF &rect, CartonizerEnums::paintQuality quality);
 
 private:
 	QBrush m_background;
+	bool m_cartonChangeIsPainted;
+	int m_antiAliasTimerID;
 };
 
 #endif

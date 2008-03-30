@@ -27,7 +27,11 @@
 #include <QRectF>
 #include "cartonizerproperties.h"
 
+#if QT_VERSION >= 0x040400
 QT_FORWARD_DECLARE_CLASS(QPaintDevice)
+#else
+class QPaintDevice;
+#endif
 
 class CartonizerController : public QObject
 {

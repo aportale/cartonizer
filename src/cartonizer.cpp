@@ -35,7 +35,15 @@ void Cartonizer::paintFaceTexture(QPainter *painter, Faces face)
 		:face == Left?m_leftFace
 		:face == Top?m_topFace
 		:/* face == Right? */m_rightFace;
-	painter->drawPixmap(QPointF(), facePixmap, QRectF(QPointF(), faceSize(face)));
+
+	// In order to prevent thin gaps between faces, we implement
+	// some kind of "trapping" like it is done in printing
+	const QRectF sourceRect(QPointF(), faceSize(face));
+	const qreal targetRectGrow = .5;
+	const QRectF targetRect(QRectF(QPointF(),
+		faceSize(face)).adjusted(-targetRectGrow, -targetRectGrow, targetRectGrow, targetRectGrow));
+
+	painter->drawPixmap(targetRect, facePixmap, sourceRect);
 }
 
 qreal Cartonizer::xRotation() const

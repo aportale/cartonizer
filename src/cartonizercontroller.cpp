@@ -23,29 +23,31 @@
 #include "cartonizercontroller.h"
 #include "undostack.h"
 #include "cartonizercommands.h"
-#include "cartonizerproperties.h"
 #include "cartonizertools.h"
 #include "cartonizer.h"
 #include <QMetaProperty>
 #include <QPixmap>
 #include <QPainter>
 #include <QVariant>
+#include <QFileDialog>
 
 CartonizerController::CartonizerController(QObject *parent)
 	: QObject(parent)
 	, m_model(NULL)
 	, m_view(NULL)
+	, m_cartonSaveSize(400, 400)
 {
 	connect(UndoStack::instance(), SIGNAL(indexChanged(int)), this, SIGNAL(cartonChanged()));
 }
 
-void CartonizerController::setModelAndView(Cartonizer *model, QObject *view)
+void CartonizerController::setModelAndView(QObject *model, QObject *view)
 {
 	m_model = model;
 	m_view = view;
-	connect(view, SIGNAL(needsPreviewPaint(QPaintDevice *, const QRectF &, bool)), model, SLOT(paint(QPaintDevice *, const QRectF &, bool)));
+	connect(view, SIGNAL(needsPreviewPaint(QPaintDevice *, const QRectF &, CartonizerEnums::paintQuality)), model, SLOT(paint(QPaintDevice *, const QRectF &, CartonizerEnums::paintQuality)));
+	connect(this, SIGNAL(needsCartonPaint(QPaintDevice *, const QRectF &, CartonizerEnums::paintQuality)), model, SLOT(paint(QPaintDevice *, const QRectF &, CartonizerEnums::paintQuality)));
 	connect(view, SIGNAL(propertyChanged(const char*, const QVariant&)), SLOT(handleViewPropertyChanged(const char*, const QVariant&)));
-	connect(view, SIGNAL(saveImage(const QString &, const QSize &)), SLOT(handleSaveImage(const QString &, const QSize &)));
+	connect(view, SIGNAL(saveCartonRequested()), SLOT(saveCarton()));
 	connect(this, SIGNAL(cartonChanged()), view, SLOT(updatePreview()));
 	const bool viewSelectsAndFocusses = view->property(CartonizerProperties::selectAndFocus).toBool();
 	view->setProperty(CartonizerProperties::selectAndFocus, QVariant(false));
@@ -64,12 +66,17 @@ void CartonizerController::handleViewPropertyChanged(const char *name, const QVa
 	UndoStack::instance()->push(command);
 }
 
-void CartonizerController::handleSaveImage(const QString &fileName, const QSize &size)
+void CartonizerController::saveCarton()
 {
-	QImage image(size, QImage::Format_ARGB32);
-	image.fill(Qt::transparent);
-	m_model->paint(&image, image.rect(), true);
-	const bool success = image.save(fileName);
+	const QString fileName = 
+		QFileDialog::getSaveFileName(
+		NULL, tr("Save File"), "untitled.png", tr("Png (*.png)"));
+	if (!fileName.isEmpty()) {
+		QImage image(m_cartonSaveSize, QImage::Format_ARGB32);
+		image.fill(Qt::transparent);
+		emit needsCartonPaint(&image, image.rect(), CartonizerEnums::Antialiased);
+		const bool success = image.save(fileName);
+	}
 }
 
 QVariant CartonizerController::transformViewToModelProperty(const char *propertyName, const QVariant &viewValue) const

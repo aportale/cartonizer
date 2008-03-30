@@ -24,6 +24,7 @@
 #define CARTONIZERPREVIEWWIDGET_H
 
 #include <QWidget>
+#include "cartonizerproperties.h"
 
 class CartonizerPreviewWidget : public QWidget
 {
@@ -34,7 +35,7 @@ public:
 	void paintEvent(QPaintEvent *event);
 
 signals:
-	void needsPaint(QPaintDevice *paintDevice, const QRectF &rect, bool highQuality);
+	void needsPaint(QPaintDevice *paintDevice, const QRectF &rect, CartonizerEnums::paintQuality quality);
 
 private:
 	QBrush m_background;

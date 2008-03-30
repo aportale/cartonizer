@@ -24,9 +24,10 @@
 #define CARTONIZERCONTROLLER_H
 
 #include <QObject>
-#include <QSize>
+#include <QRectF>
+#include "cartonizerproperties.h"
 
-class Cartonizer;
+QT_FORWARD_DECLARE_CLASS(QPaintDevice)
 
 class CartonizerController : public QObject
 {
@@ -35,20 +36,22 @@ class CartonizerController : public QObject
 public:
 	CartonizerController(QObject *parent = 0);
 
-	void setModelAndView(Cartonizer *model, QObject *view);
+	void setModelAndView(QObject *model, QObject *view);
 
 signals:
 	void cartonChanged();
+	void needsCartonPaint(QPaintDevice *paintDevice, const QRectF &rect, CartonizerEnums::paintQuality quality);
 
 public slots:
 	void handleViewPropertyChanged(const char *name, const QVariant &value);
-	void handleSaveImage(const QString &fileName, const QSize &size);
+	void saveCarton();
 
 private:
 	QVariant transformViewToModelProperty(const char *propertyName, const QVariant &viewValue) const;
 
-	Cartonizer *m_model;
+	QObject *m_model;
 	QObject *m_view;
+	QSize m_cartonSaveSize;
 };
 
 #endif

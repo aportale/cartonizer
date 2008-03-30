@@ -44,12 +44,11 @@ Carton::Carton(QObject *parent)
 {
 }
 
-void Carton::paint(QPaintDevice *paintDevice, const QRectF &rect, bool highQuality)
+void Carton::paint(QPaintDevice *paintDevice, const QRectF &rect, CartonizerEnums::paintQuality quality)
 {
 	QPainter painter(paintDevice);
-	painter.save();
-	painter.setRenderHint(QPainter::Antialiasing, highQuality);
-	painter.setRenderHint(QPainter::SmoothPixmapTransform, highQuality);
+	painter.setRenderHint(QPainter::Antialiasing, quality == CartonizerEnums::Antialiased);
+	painter.setRenderHint(QPainter::SmoothPixmapTransform, quality == CartonizerEnums::Antialiased);
 
 	const QRectF boundingRect(this->boundingRect());
 	const qreal scaling = qMin(rect.width() / boundingRect.width(), rect.height() / boundingRect.height());
@@ -73,8 +72,6 @@ void Carton::paint(QPaintDevice *paintDevice, const QRectF &rect, bool highQuali
 		paintFace(&painter, Right, translation, scaling);
 		paintFace(&painter, RightReflection, translation, scaling);
 	}
-
-	painter.restore();
 }
 
 void Carton::paintFace(QPainter *painter, Faces face, const QPointF &translation, qreal scaling)

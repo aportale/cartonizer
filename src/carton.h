@@ -23,6 +23,8 @@
 #ifndef CARTON_H
 #define CARTON_H
 
+#include "cartonizerproperties.h"
+
 #include <QObject>
 #include <QImage>
 #include <QHash>
@@ -90,7 +92,7 @@ public:
 	static const qreal PI;
 
 public slots:
-	void paint(QPaintDevice *paintDevice, const QRectF &rect, bool highQuality);
+	void paint(QPaintDevice *paintDevice, const QRectF &rect, CartonizerEnums::paintQuality quality);
 
 protected:
 	qreal m_xRotation;

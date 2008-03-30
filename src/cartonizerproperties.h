@@ -34,5 +34,14 @@ public:
 	static const char* const selectAndFocus;
 };
 
+class CartonizerEnums
+{
+public:
+	enum paintQuality {
+		Aliased,
+		Antialiased
+	};
+};
+
 #endif
 

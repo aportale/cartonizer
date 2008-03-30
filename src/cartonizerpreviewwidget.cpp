@@ -32,9 +32,10 @@ CartonizerPreviewWidget::CartonizerPreviewWidget(QWidget *parent)
 
 void CartonizerPreviewWidget::paintEvent(QPaintEvent *event)
 {
+	Q_UNUSED(event)
 	QPainter p(this);
 	p.fillRect(rect(), m_background);
 	p.end();
-	emit needsPaint(this, rect(), true);
+	emit needsPaint(this, rect(), CartonizerEnums::Antialiased);
 }
 

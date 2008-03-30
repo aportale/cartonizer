@@ -29,7 +29,11 @@
 #include <QImage>
 #include <QHash>
 
+#if QT_VERSION >= 0x040400
 QT_FORWARD_DECLARE_CLASS(QPainter)
+#else
+class QPainter;
+#endif
 
 class Carton : public QObject
 {

@@ -293,6 +293,7 @@ bool Carton::isFaceVisibleFromFront(Faces face) const
 
 QPolygonF Carton::outline() const
 {
+#if QT_VERSION >= 0x040400
 	QPainterPath painterPath;
 
 	if (isFaceVisibleFromFront(Top))
@@ -307,6 +308,9 @@ QPolygonF Carton::outline() const
 		painterPath.addPolygon(face2d(Back));
 
 	return painterPath.simplified().toFillPolygon();
+#else
+	return QPolygonF();
+#endif
 }
 
 QRectF Carton::boundingRect() const

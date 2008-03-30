@@ -44,7 +44,8 @@ signals:
 
 public slots:
 	void handleViewPropertyChanged(const char *name, const QVariant &value);
-	void saveCarton();
+	bool saveCarton();
+	bool saveCarton(const QString &fileName);
 
 private:
 	QVariant transformViewToModelProperty(const char *propertyName, const QVariant &viewValue) const;

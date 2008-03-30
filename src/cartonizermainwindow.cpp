@@ -31,7 +31,7 @@ CartonizerMainWindow::CartonizerMainWindow(QWidget *parent)
 	ActionsToolbar *toolBar = new ActionsToolbar(this);
 	addToolBar(toolBar);
 	connect(toolBar, SIGNAL(save()), SIGNAL(saveCartonRequested()));
-	connect(m_previewWidget, SIGNAL(needsPaint(QPaintDevice *, const QRectF&, CartonizerEnums::paintQuality)), this, SIGNAL(needsPreviewPaint(QPaintDevice *, const QRectF&, CartonizerEnums::paintQuality)));
+	connect(m_previewWidget, SIGNAL(needsPaint(QPaintDevice *, const QRectF&, CartonizerEnums::paintQuality)), SIGNAL(needsPreviewPaint(QPaintDevice *, const QRectF&, CartonizerEnums::paintQuality)));
 }
 
 qreal CartonizerMainWindow::xRotation() const

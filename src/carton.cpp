@@ -46,6 +46,18 @@ Carton::Carton(QObject *parent)
 
 void Carton::paint(QPaintDevice *paintDevice, const QRectF &rect, CartonizerEnums::paintQuality quality)
 {
+	if (quality == CartonizerEnums::HighQuality) {
+		const int highResolutionFactor = 3;
+		QSizeF highResolutionImageSize(rect.size().width() * highResolutionFactor, rect.size().height() * highResolutionFactor);
+		const QRectF highResolutionImageRect(QPointF(), highResolutionImageSize);
+		QImage highResolutionImage(highResolutionImageSize.toSize(), QImage::Format_ARGB32);
+		highResolutionImage.fill(qRgba(255, 255, 255, 0)); // Intentionally not Qt::transparent
+		paint(&highResolutionImage, highResolutionImageRect, CartonizerEnums::Antialiased);
+		QPainter painter(paintDevice);
+		painter.drawImage(0, 0, highResolutionImage.scaled(rect.size().toSize(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+		return;
+	}
+
 	QPainter painter(paintDevice);
 	painter.setRenderHint(QPainter::Antialiasing, quality == CartonizerEnums::Antialiased);
 	painter.setRenderHint(QPainter::SmoothPixmapTransform, quality == CartonizerEnums::Antialiased);

@@ -39,7 +39,8 @@ class CartonizerEnums
 public:
 	enum paintQuality {
 		Aliased,
-		Antialiased
+		Antialiased,
+		HighQuality
 	};
 };
 

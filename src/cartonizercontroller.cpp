@@ -78,7 +78,7 @@ bool CartonizerController::saveCarton(const QString &fileName)
 {
 	QImage image(m_cartonSaveSize, QImage::Format_ARGB32);
 	image.fill(Qt::transparent);
-	emit needsCartonPaint(&image, image.rect(), CartonizerEnums::Antialiased);
+	emit needsCartonPaint(&image, image.rect(), CartonizerEnums::HighQuality);
 	return image.save(fileName);
 }
 

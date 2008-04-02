@@ -28,7 +28,7 @@
 #include <QImage>
 #include <QtDebug>
 
-#ifndef QT_DLL
+#if !defined(QT_SHARED) && !defined(QT_DLL)
 #include <QtPlugin>
 
 Q_IMPORT_PLUGIN(qjpeg)

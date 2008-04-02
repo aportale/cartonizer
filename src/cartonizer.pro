@@ -43,6 +43,10 @@ SOURCES += \
 	cartonizerpreviewwidget.cpp \
 	main.cpp
 
+QTPLUGIN += \
+	qjpeg \
+	qtiff
+
 FORMS += \
 	cartonizermainwindow.ui
 

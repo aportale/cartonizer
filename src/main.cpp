@@ -28,6 +28,13 @@
 #include <QImage>
 #include <QtDebug>
 
+#ifndef QT_DLL
+#include <QtPlugin>
+
+Q_IMPORT_PLUGIN(qjpeg)
+Q_IMPORT_PLUGIN(qtiff)
+#endif
+
 void savePng(Cartonizer *cartonizer)
 {
 	QImage pngImage(800, 800, QImage::Format_ARGB32);

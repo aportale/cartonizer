@@ -34,17 +34,21 @@ public:
 	CartonizerPreviewWidget(QWidget *parent = 0);
 	void paintEvent(QPaintEvent *event);
 	void timerEvent(QTimerEvent *event);
+	void mousePressEvent(QMouseEvent *event);
+	void mouseMoveEvent(QMouseEvent *event);
 
 public slots:
 	void updatePreview();
 
 signals:
 	void needsPaint(QPaintDevice *paintDevice, const QRectF &rect, CartonizerEnums::paintQuality quality);
+	void mouseManipulation(int xValue, int yValue);
 
 private:
 	QBrush m_background;
 	bool m_cartonChangeIsPainted;
 	int m_antiAliasTimerID;
+	QPoint m_previousMousePosition;
 };
 
 #endif

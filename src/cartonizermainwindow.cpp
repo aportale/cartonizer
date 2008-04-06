@@ -24,14 +24,14 @@
 #include "actionstoolbar.h"
 
 CartonizerMainWindow::CartonizerMainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , m_selectAndFocus(true)
+	: QMainWindow(parent)
+	, m_selectAndFocus(true)
 {
 	setupUi(this);
 	ActionsToolbar *toolBar = new ActionsToolbar(this);
 	addToolBar(toolBar);
 	connect(toolBar, SIGNAL(save()), SIGNAL(saveCartonRequested()));
-	connect(m_previewWidget, SIGNAL(needsPaint(QPaintDevice *, const QRectF&, CartonizerEnums::paintQuality)), SIGNAL(needsPreviewPaint(QPaintDevice *, const QRectF&, CartonizerEnums::paintQuality)));
+	connect(previewWidget, SIGNAL(needsPaint(QPaintDevice *, const QRectF&, CartonizerEnums::paintQuality)), SIGNAL(needsPreviewPaint(QPaintDevice *, const QRectF&, CartonizerEnums::paintQuality)));
 }
 
 qreal CartonizerMainWindow::xRotation() const
@@ -96,7 +96,7 @@ void CartonizerMainWindow::setSelectAndFocus(bool selectAndFocus)
 
 void CartonizerMainWindow::updatePreview()
 {
-	m_previewWidget->updatePreview();
+	previewWidget->updatePreview();
 }
 
 void CartonizerMainWindow::updatePropery(const char *name, const QVariant &value)
@@ -127,6 +127,12 @@ void CartonizerMainWindow::on_focalLengthSpinBox_valueChanged(double length)
 void CartonizerMainWindow::on_specularityValueSpinBox_valueChanged(double value)
 {
 	emit propertyChanged(CartonizerProperties::specularityValue, value);
+}
+
+void CartonizerMainWindow::on_previewWidget_mouseManipulation(int xValue, int yValue)
+{
+	const double newValue = yRotationSpinBox->value() + (double)xValue / 10;
+	yRotationSpinBox->setValue(newValue);
 }
 
 void CartonizerMainWindow::updateSpinBoxValue(QDoubleSpinBox *spinBox, double value)

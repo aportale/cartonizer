@@ -67,6 +67,7 @@ private slots:
 	void on_observerHeightSpinBox_valueChanged(double height);
 	void on_focalLengthSpinBox_valueChanged(double length);
 	void on_specularityValueSpinBox_valueChanged(double value);
+	void on_previewWidget_mouseManipulation(int xValue, int yValue);
 
 private:
 	void updateSpinBoxValue(QDoubleSpinBox *spinBox, double value);

@@ -24,6 +24,7 @@
 
 #include <QPainter>
 #include <QTime>
+#include <QMouseEvent>
 #include <QtDebug>
 
 CartonizerPreviewWidget::CartonizerPreviewWidget(QWidget *parent)
@@ -57,6 +58,19 @@ void CartonizerPreviewWidget::timerEvent(QTimerEvent *event)
 	m_cartonChangeIsPainted = false;
 	update();
 	killTimer(m_antiAliasTimerID);
+}
+
+void CartonizerPreviewWidget::mousePressEvent(QMouseEvent *event)
+{
+	m_previousMousePosition = event->pos();
+}
+
+void CartonizerPreviewWidget::mouseMoveEvent(QMouseEvent *event)
+{
+	const int mouseXOffset = event->x() - m_previousMousePosition.x();
+	const int mouseYOffset = event->y() - m_previousMousePosition.y();
+	emit mouseManipulation(mouseXOffset, mouseYOffset);
+	m_previousMousePosition = event->pos();
 }
 
 void CartonizerPreviewWidget::updatePreview()

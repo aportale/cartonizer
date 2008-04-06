@@ -201,9 +201,11 @@ void Carton::boxVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const
 	switch (vertex) {
 		case LeftTopFront:
 		case LeftBottomFront:
+		case LeftEffectiveSubFront:
 		case LeftSubFront:
 		case LeftTopBack:
 		case LeftBottomBack:
+		case LeftEffectiveSubBack:
 		case LeftSubBack:
 			x = -(m_boxWidth / 2);
 			break;
@@ -225,6 +227,12 @@ void Carton::boxVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const
 		case RightBottomBack:
 			y = 0;
 			break;
+		case LeftEffectiveSubFront:
+		case LeftEffectiveSubBack:
+		case RightEffectiveSubFront:
+		case RightEffectiveSubBack:
+			y = -m_boxHeight/100 * m_specularityValue;
+			break;
 		default:
 			y = -m_boxHeight;
 	}
@@ -233,9 +241,11 @@ void Carton::boxVertex3d(Vertices vertex, qreal &x, qreal &y, qreal &z) const
 	switch (vertex) {
 		case LeftTopBack:
 		case LeftBottomBack:
+		case LeftEffectiveSubBack:
 		case LeftSubBack:
 		case RightTopBack:
 		case RightBottomBack:
+		case RightEffectiveSubBack:
 		case RightSubBack:
 			z = -(m_boxDepth / 2);
 			break;
@@ -330,7 +340,7 @@ QRectF Carton::boundingRect() const
 	QPolygonF vertices(8);
 	static const Vertices boundingVertices[] =	{
 		LeftTopBack, RightTopBack, RightTopFront, LeftTopFront, 
-		LeftBottomBack, RightBottomBack, RightBottomFront, LeftBottomFront
+		LeftEffectiveSubBack, RightEffectiveSubBack, RightEffectiveSubFront, LeftEffectiveSubFront
 	};
 	const int boundingVerticesCount = sizeof(boundingVertices)/sizeof(boundingVertices[0]);
 	for (int i = 0; i < boundingVerticesCount; i++)

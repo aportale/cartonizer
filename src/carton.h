@@ -49,12 +49,16 @@ public:
 		RightTopFront,
 		LeftBottomFront,
 		RightBottomFront,
+		LeftEffectiveSubFront,
+		RightEffectiveSubFront,
 		LeftSubFront,
 		RightSubFront,
 		LeftTopBack,
 		RightTopBack,
 		LeftBottomBack,
 		RightBottomBack,
+		LeftEffectiveSubBack,
+		RightEffectiveSubBack,
 		LeftSubBack,
 		RightSubBack
 	};

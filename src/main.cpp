@@ -32,14 +32,14 @@
 #include <QtPlugin>
 
 Q_IMPORT_PLUGIN(qjpeg)
-Q_IMPORT_PLUGIN(qtiff)
+//Q_IMPORT_PLUGIN(qtiff)
 #endif
 
 void savePng(Cartonizer *cartonizer)
 {
 	QImage pngImage(800, 800, QImage::Format_ARGB32);
 	pngImage.fill(qRgba(255, 255, 255, 0));
-	cartonizer->paint(&pngImage, QRectF(0, 0, 800, 800), CartonizerEnums::Antialiased);
+	cartonizer->paint(&pngImage, pngImage.rect(), CartonizerEnums::HighQuality);
 	pngImage.save("carton.png");
 }
 

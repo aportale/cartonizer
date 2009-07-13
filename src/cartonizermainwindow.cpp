@@ -131,6 +131,7 @@ void CartonizerMainWindow::on_specularityValueSpinBox_valueChanged(double value)
 
 void CartonizerMainWindow::on_previewWidget_mouseManipulation(int xValue, int yValue)
 {
+    Q_UNUSED(yValue)
     const double newValue = yRotationSpinBox->value() + (double)xValue / 10;
     yRotationSpinBox->setValue(newValue);
 }

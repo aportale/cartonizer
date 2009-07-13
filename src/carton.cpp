@@ -137,7 +137,7 @@ void Carton::paintFaceReflectionTexture(QPainter *painter, Faces face)
     alphaPainter.end();
 
     painter->save();
-    painter->drawImage(0, remainingFaceHeight, blendImage);
+    painter->drawImage(0, int(remainingFaceHeight), blendImage);
     painter->restore();
 }
 

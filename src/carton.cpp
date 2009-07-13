@@ -120,13 +120,13 @@ void Carton::paintFaceReflectionTexture(QPainter *painter, Faces face)
     const qreal faceHeight = faceSize.height();
     const qreal reflectionHeight = faceHeight/100 * m_specularityValue;
     const qreal remainingFaceHeight = faceHeight - reflectionHeight;
-    QImage blendImage(QSize(faceWith, reflectionHeight), QImage::Format_ARGB32);
+    QImage blendImage(QSizeF(faceWith, reflectionHeight).toSize(), QImage::Format_ARGB32);
     QPainter blendPainter(&blendImage);
     blendPainter.translate(0, -remainingFaceHeight);
     paintFaceTexture(&blendPainter, emittingFace);
     blendPainter.end();
 
-    QImage alphaImage(QSize(faceWith, reflectionHeight), QImage::Format_ARGB32);
+    QImage alphaImage(QSizeF(faceWith, reflectionHeight).toSize(), QImage::Format_ARGB32);
     QPainter alphaPainter(&alphaImage);
     QLinearGradient alphaGradient(0, 0, 0, faceHeight);
     alphaGradient.setColorAt(0, Qt::black);

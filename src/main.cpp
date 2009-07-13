@@ -33,7 +33,7 @@
 
 Q_IMPORT_PLUGIN(qgif)
 Q_IMPORT_PLUGIN(qjpeg)
-//Q_IMPORT_PLUGIN(qtiff)
+Q_IMPORT_PLUGIN(qtiff)
 #endif
 
 void savePng(Cartonizer *cartonizer)

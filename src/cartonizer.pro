@@ -43,9 +43,12 @@ SOURCES += \
     cartonizerpreviewwidget.cpp \
     main.cpp
 
-QTPLUGIN += \
-    qjpeg \
-    qtiff
+contains(CONFIG, static)|contains(CONFIG, qt_no_framework) {
+    QTPLUGIN += \
+        qgif \
+        qjpeg \
+        qtiff
+}
 
 FORMS += \
     cartonizermainwindow.ui
